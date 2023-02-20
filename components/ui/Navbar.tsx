@@ -21,7 +21,7 @@ export const Navbar: React.FC<Props> = ({}) => {
 
                 <Box flex={1}/>
 
-                <Box display='flex' gap={1}>
+                <Box gap={1} sx={{ display: { xs: 'none', sm: 'block' } }}>
                     <NextLink href='/category/woman' passHref legacyBehavior>
                         <Link>
                             <Button>

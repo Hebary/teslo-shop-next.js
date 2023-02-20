@@ -1,5 +1,5 @@
 import Head from 'next/head';
-import { Navbar } from '../ui'
+import { Navbar, Sidemenu } from '../ui'
 interface Props {
     children: React.ReactElement | React.ReactElement[]
     imageFullUrl?: string
@@ -26,7 +26,7 @@ export const ShopLayout: React.FC<Props> = ({ children, imageFullUrl, title, pag
        </Head>
         
        <Navbar/>
-       {/* <Sidebar/> */}
+       <Sidemenu/>
         
        <main style={{ padding: '0 30px', margin:'80px auto', maxWidth:'1440px' }}>
             {children}
