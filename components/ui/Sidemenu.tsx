@@ -26,6 +26,7 @@ import {
     SearchOutlined, 
     VpnKeyOutlined 
 } from "@mui/icons-material"
+import { useMemo, useState } from "react";
 
 
 interface Props {
@@ -33,9 +34,12 @@ interface Props {
 }
 
 export const Sidemenu: React.FC<Props> = ({}) => {
-   return (
+    
+        
+   
+    return (
         <Drawer
-            open={true}
+            open={ false }
             anchor='right'
             sx={{ backdropFilter:'blur(4px)', transition: 'all .7s cubic-bezier(0.25, 0.8, 0.25, 1)' }}
         >
@@ -50,7 +54,7 @@ export const Sidemenu: React.FC<Props> = ({}) => {
                         endAdornment={
                             <InputAdornment position="end">
                                 <IconButton
-                                aria-label="toggle password visibility"
+                                    aria-label="toggle password visibility"
                                 >
                                  <SearchOutlined />
                                 </IconButton>
