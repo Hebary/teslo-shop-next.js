@@ -1,6 +1,7 @@
-import { Box, Card, CardActionArea, CardMedia, Grid, Typography } from "@mui/material"
+import { Box, Card, CardActionArea, CardMedia, Grid, Link, Typography } from "@mui/material"
 import { useMemo, useState } from "react"
 import { IProduct } from "@/interfaces"
+import NextLink from 'next/link';
 
 
 
@@ -17,9 +18,9 @@ export const ProductCard: React.FC<Props> = ({ product }) => {
              isHovered 
             ? product.images[1] 
             : product.images[0]
-            ),
-            [product.images, isHovered]
-        );
+        
+        ),[product.images, isHovered]
+    );
 
     return (
         <Grid
@@ -27,16 +28,20 @@ export const ProductCard: React.FC<Props> = ({ product }) => {
             onMouseEnter={() => setIsHovered(true)}
             onMouseLeave={() => setIsHovered(false)}
         >
-            <Card>
-                <CardActionArea title="View Product">
-                    <CardMedia
-                        component={'img'}
-                        alt={product.title}
-                        image={ `products/${ productImage }` }
-                        className='fadeIn'
-                    />
-                </CardActionArea>
-            </Card>
+            <NextLink href={ `/product/slug`} passHref legacyBehavior>
+                <Link>
+                    <Card>
+                    <CardActionArea title="View Product">
+                        <CardMedia
+                            component={'img'}
+                            alt={product.title}
+                            image={ `products/${ productImage }` }
+                            className='fadeIn'
+                        />
+                    </CardActionArea>
+                    </Card>
+                </Link>
+            </NextLink>
 
             <Box sx={{ mt:1 }} className='fadeIn' >
                 <Typography fontWeight={500} sx={{ mb:1 }}>{product.title}</Typography>

@@ -22,10 +22,16 @@
 
 .circular-btn {
   border-radius: 30px;
+  color:#000;
+  outline: 1px solid #274494;
+  transition: all .4s cubic-bezier(0.25, 0.8, 0.25, 1);
 }
 
 .circular-btn:hover {
-  background-color: #274494;
+  background-color: #1a3276;
+  color: #FFF;
+  outline: none;
+
 }
 
 
