@@ -10,7 +10,7 @@ export const ProductSlideshow: React.FC<Props> = ({ images }) => {
    return (
         <Slide
             easing="ease"
-            duration={7000}
+            duration={5000}
             indicators
             autoplay
         >

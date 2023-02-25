@@ -22,20 +22,19 @@
 
 .circular-btn {
   border-radius: 30px;
-  color:#000;
-  outline: 1px solid #274494;
+  color:#fff;
   transition: all .4s cubic-bezier(0.25, 0.8, 0.25, 1);
+  background-color: #1a3276;
 }
 
 .circular-btn:hover {
-  background-color: #1a3276;
+  background-color: #274494;
   color: #FFF;
   outline: none;
-
 }
 
 
 .summary-card {
   border: 1px solid rgba(0, 0, 0, 0.1);
-  box-shadow: 0px 5px 5px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
 }
