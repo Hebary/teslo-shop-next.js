@@ -58,7 +58,7 @@ const Address: NextPage<Props> = ({}) => {
             </Grid>
                 <Box display='flex'  justifyContent='center' sx={{ mt:5, mx:55 }}>
                     <Button variant='contained' fullWidth sx={{ p:1 }} className='circular-btn' color='primary' >
-                        Check my Order
+                        Check My Order
                     </Button>
                 </Box>
         </ShopLayout>

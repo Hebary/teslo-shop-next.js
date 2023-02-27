@@ -1,7 +1,7 @@
 import { NextPage } from 'next';
 import { Typography, Grid, Card, CardContent, Divider, Box, Button } from '@mui/material';
 import { ShopLayout } from '@/components/layouts';
-import { CartList, Summary } from '@/components/cart';
+import { CartList, OrderSummary } from '@/components/cart';
 
 
 
@@ -12,8 +12,8 @@ const Cart: NextPage<Props> = ({}) => {
    
    
     return (
-        <ShopLayout title={' 3 products on your cart'} pageDescription='Store shopping cart'>
-            <Typography variant='h1' component='h1'  sx={{mb:1.5}}>Shop Cart</Typography>
+        <ShopLayout title={'order summary page'} pageDescription='summary client order'>
+            <Typography variant='h1' component='h1'  sx={{mb:1.5}}>Checkout - Summary</Typography>
             <Grid container>
                 <Grid item xs={ 12 } sm={ 7 }>
                     <CartList editable />
@@ -23,7 +23,7 @@ const Cart: NextPage<Props> = ({}) => {
                         <CardContent>
                             <Typography variant='h2' component='h2'>Order</Typography>
                             <Divider sx={{ my: 1 }}/>
-                            <Summary/>
+                            <OrderSummary/>
                             <Box sx={{ mt: 3 }}>
                                 <Button color='secondary' className='circular-btn' fullWidth>
                                     Checkout

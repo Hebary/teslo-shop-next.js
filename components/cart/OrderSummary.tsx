@@ -3,7 +3,7 @@ import { Grid, Typography, Divider } from '@mui/material';
 
 
 
-export const Summary: React.FC = () => {
+export const OrderSummary: React.FC = () => {
 
 
 return (
@@ -25,7 +25,7 @@ return (
             </Grid>             
 
             <Grid item  xs={ 6 }>
-                <Typography >Taxes</Typography>    
+                <Typography >Taxes (10%)</Typography>    
             </Grid>                 
 
             <Grid item  xs={ 6 } display='flex' justifyContent='end'>
