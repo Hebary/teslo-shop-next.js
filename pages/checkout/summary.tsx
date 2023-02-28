@@ -14,7 +14,7 @@ interface Props {
 const SummaryPage: NextPage<Props> = ({}) => {
     return (
         <ShopLayout title={'Summary'} pageDescription='Client Summary Order'>
-            <Typography variant='h1' component='h1'  sx={{mb:1.5}}>Order Summary</Typography>
+            <Typography variant='h1' component='h1'  sx={{ mb:1.5 }}>Order Summary</Typography>
             <Grid container>
                 <Grid item xs={ 12 } sm={ 7 }>
                     <CartList />
