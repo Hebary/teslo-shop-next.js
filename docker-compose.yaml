@@ -1,0 +1,12 @@
+services:
+  teslodb:
+    image: mongo:5.0.0
+    container_name: teslo-database
+    ports:
+      - 27017:27017
+    volumes:
+    # if i delete the docker-img, the data will persist if i use volumes
+    # put the mongo folder volume on this url
+      - ./mongo:/data/db
+
+      
