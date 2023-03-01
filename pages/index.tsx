@@ -3,9 +3,9 @@ import { Typography } from '@mui/material'
 
 import { ShopLayout } from '@/components/layouts';
 import { ProductList } from '@/components/products';
+import { FullScreenLoading } from '@/components/ui';
 
 import { useProducts } from '@/hooks';
-import { IProduct } from '@/interfaces';
 
 interface Props {
 }
@@ -18,7 +18,7 @@ const HomePage: NextPage<Props> = ({}) => {
             <Typography variant='h4' sx={{ my:3 , ml:.5}}>All Products</Typography>
             {
             isLoading 
-                ? <Typography variant='h6' sx={{ my:3 , ml:.5}}>Loading...</Typography>
+                ? <FullScreenLoading/>
                 : <ProductList 
                     products={ products }
                 />
