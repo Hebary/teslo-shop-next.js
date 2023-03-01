@@ -15,7 +15,7 @@ export const Navbar: React.FC<Props> = ({}) => {
                 <NextLink href='/' passHref legacyBehavior>
                     <Link display='flex' alignItems='center'>
                         <Typography variant='h6'>Teslo</Typography>
-                        <Typography sx={{ ml: 0.5, fontSize:'22px' }} className='red-hat-font'>Shop</Typography>
+                        <Typography sx={{ ml: 0.5, fontSize:'22px' }} fontWeight='light' className='red-hat-font'>Shop</Typography>
                     </Link>
                 </NextLink>
 
