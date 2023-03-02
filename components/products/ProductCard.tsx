@@ -16,8 +16,8 @@ export const ProductCard: React.FC<Props> = ({ product }) => {
 
     const productImage = useMemo(() => (
             isHovered 
-            ?`/products/${ product.images[1] }`
-            :`/products/${ product.images[0] }`
+            ? `/products/${ product.images[1] }`
+            : `/products/${ product.images[0] }`
         
         ),[product.images, isHovered]
     );
@@ -28,7 +28,7 @@ export const ProductCard: React.FC<Props> = ({ product }) => {
             onMouseEnter={() => setIsHovered(true)}
             onMouseLeave={() => setIsHovered(false)}
         >
-            <NextLink href={ `/product/slug`} passHref legacyBehavior>
+            <NextLink href={ `/product/${ product.slug }` } passHref legacyBehavior>
                 <Link>
                     <Card>
                     <CardActionArea title="View Product">

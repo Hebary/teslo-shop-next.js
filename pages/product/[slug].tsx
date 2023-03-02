@@ -1,17 +1,23 @@
-import { NextPage } from 'next';
+import { NextPage, GetStaticPaths, GetStaticProps } from 'next';
 import { Box, Button, Chip, Grid, Typography } from '@mui/material';
-import { initialData } from '@/database/products';
 import { ProductSlideshow, SizeSelector } from '@/components/products';
 import { ShopLayout } from '@/components/layouts';
 import { ItemCounter } from '@/components/ui';
+import { IProduct } from '@/interfaces';
+import { dbProducts } from '@/database';
+import { ParsedUrlQuery } from 'querystring';
 
-const product = initialData.products[50];
 
 
 interface Props {
+    product: IProduct
 }
 
-const ProductPage: NextPage<Props> = ({}) => {
+interface Params extends ParsedUrlQuery {
+    slug: string
+}
+
+const ProductPage: NextPage<Props> = ({ product }) => {
  
     return (
         <ShopLayout title={ `${product.title}` } pageDescription={` ${product.description}` }>
@@ -52,5 +58,47 @@ const ProductPage: NextPage<Props> = ({}) => {
     )
 }
 
+
+// You should use getStaticPaths if you’re statically pre-rendering pages that use dynamic routes
+
+export const getStaticPaths: GetStaticPaths<Params> = async (ctx) => {
+    const slugs = await dbProducts.getAllProductSlugs() // your fetch function here 
+    return {
+        paths: slugs.map(({ slug }) => ({
+            params: {
+                slug
+            }
+        })),
+        fallback: "blocking"
+    }
+}
+
+// You should use getStaticProps when:
+//- The data required to render the page is available at build time ahead of a user’s request.
+//- The data comes from a headless CMS.
+//- The data can be publicly cached (not user-specific).
+//- The page must be pre-rendered (for SEO) and be very fast — getStaticProps generates HTML and JSON files, both of which can be cached by a CDN for performance.
+
+export const getStaticProps: GetStaticProps<Props, Params> = async ({ params }) => {
+    const { slug = '' } = params as { slug: string };
+    const product = await dbProducts.getProductBySlug(slug) // your fetch function here 
+
+    if (!product) {
+        return {
+            redirect: {
+                destination: '/404',
+                permanent: false
+            }
+        }
+    }
+
+    return {
+        props: {
+            product,
+            revalidate: 84600
+        }
+    }
+}
+
+
 export default ProductPage;
-// triunphantly new username ??
