@@ -95,8 +95,8 @@ export const getStaticProps: GetStaticProps<Props, Params> = async ({ params }) 
     return {
         props: {
             product,
-            revalidate: 84600
-        }
+        },
+        revalidate: 86400
     }
 }
 
