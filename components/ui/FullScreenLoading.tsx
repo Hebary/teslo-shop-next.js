@@ -16,7 +16,7 @@ export const FullScreenLoading: React.FC<Props> = ({}) => {
                 height='calc(100vh - 200px)'
                 flexDirection='column'
             >
-                <Typography textAlign={'center'} >Loading...</Typography>
+                <Typography className='red-hat-font' variant='h2'>Loading...</Typography>
                 <CircularProgress thickness={ 3 }/>
                 
             </Box>

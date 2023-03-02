@@ -15,9 +15,9 @@ export const ProductCard: React.FC<Props> = ({ product }) => {
     const [isHovered, setIsHovered] = useState(false);
 
     const productImage = useMemo(() => (
-             isHovered 
-            ? product.images[1] 
-            : product.images[0]
+            isHovered 
+            ?`/products/${ product.images[1] }`
+            :`/products/${ product.images[0] }`
         
         ),[product.images, isHovered]
     );
@@ -35,8 +35,8 @@ export const ProductCard: React.FC<Props> = ({ product }) => {
                         <CardMedia
                             component={'img'}
                             alt={product.title}
-                            image={ `products/${ productImage }` }
-                            className='fadeIn'
+                            image={ productImage }
+                            className='fadeIn pcard-transition'
                         />
                     </CardActionArea>
                     </Card>
