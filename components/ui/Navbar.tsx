@@ -1,6 +1,9 @@
 import NextLink from 'next/link';
+import { useRouter } from 'next/router'
 import { AppBar, Toolbar, Typography, Link, Box, Button, IconButton, Badge } from '@mui/material';
-import { ShoppingCartOutlined, SearchOutlined } from '@mui/icons-material';
+import { ShoppingCartOutlined, SearchOutlined, MenuOutlined } from '@mui/icons-material';
+import { useContext } from 'react';
+import { UIContext } from '@/context';
 
 
 
@@ -8,7 +11,11 @@ interface Props {
 }
 
 export const Navbar: React.FC<Props> = ({}) => {
-   return (
+
+    const router = useRouter();
+    const { toggleMenu } = useContext(UIContext);
+
+    return (
 
         <AppBar>
             <Toolbar  color='black'>
@@ -24,7 +31,7 @@ export const Navbar: React.FC<Props> = ({}) => {
                 <Box gap={1} sx={{ display: { xs: 'none', sm: 'block' } }}>
                     <NextLink href='/category/women' passHref legacyBehavior>
                         <Link>
-                            <Button>
+                            <Button color={router.pathname==='/category/women' ? 'primary' : 'info'}>
                                 Women
                             </Button>
                         </Link>
@@ -32,7 +39,7 @@ export const Navbar: React.FC<Props> = ({}) => {
 
                     <NextLink href='/category/men' passHref legacyBehavior>
                         <Link>
-                            <Button>
+                            <Button color={router.pathname==='/category/men' ? 'primary' : 'info'}>
                                 Men
                             </Button>
                         </Link>
@@ -40,7 +47,7 @@ export const Navbar: React.FC<Props> = ({}) => {
 
                     <NextLink href='/category/kid' passHref legacyBehavior>
                         <Link>
-                            <Button>
+                            <Button color={router.pathname==='/category/kid' ? 'primary' : 'info'}>
                                 Kids
                             </Button>
                         </Link>
@@ -48,23 +55,25 @@ export const Navbar: React.FC<Props> = ({}) => {
                 </Box>
 
                 <Box flex={1}/>
+                <Box display='flex' alignItems='center' gap={1}>
 
-                <IconButton>
-                    <SearchOutlined/>
-                </IconButton>
-                
-                <NextLink href='/cart' passHref legacyBehavior>
-                    <Link>
-                        <Badge badgeContent={2} color='secondary' >
-                            <ShoppingCartOutlined/>
-                        </Badge>
-                    </Link>
-                </NextLink>
-                
-                <Button>
-                    Menu
-                </Button>
+                    <IconButton>
+                        <SearchOutlined color='primary'/>
+                    </IconButton>
+
+                    <NextLink href='/cart' passHref legacyBehavior>
+                        <Link>
+                            <Badge badgeContent={2} color='secondary' >
+                                <ShoppingCartOutlined/>
+                            </Badge>
+                        </Link>
+                    </NextLink>
+
+                    <IconButton onClick={toggleMenu}>
+                        <MenuOutlined color='primary'/>
+                    </IconButton>
             
+                </Box>
             </Toolbar>
         </AppBar>
     )

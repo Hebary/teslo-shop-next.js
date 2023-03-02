@@ -1,32 +1,15 @@
+import { useContext } from "react"
+import { useRouter } from 'next/router'
+import { UIContext } from "@/context"
+//Components
 import { 
-    Box, 
-    Divider, 
-    Drawer, 
-    IconButton, 
-    Input, 
-    InputAdornment, 
-    List, 
-    ListItem, 
-    ListItemButton, 
-    ListItemIcon, 
-    ListItemText, 
-    ListSubheader 
+    Box, Divider, Drawer, IconButton, Input, InputAdornment, List, ListItem, ListItemButton, ListItemIcon, ListItemText, ListSubheader 
 } from "@mui/material"
-
 // Icons
 import { 
-    AccountCircleOutlined, 
-    AdminPanelSettings, 
-    CategoryOutlined, 
-    ConfirmationNumberOutlined, 
-    EscalatorWarningOutlined, 
-    FemaleOutlined, 
-    LoginOutlined, 
-    MaleOutlined, 
-    SearchOutlined, 
-    VpnKeyOutlined 
+    AccountCircleOutlined, AdminPanelSettings, CategoryOutlined, ConfirmationNumberOutlined, EscalatorWarningOutlined, FemaleOutlined, 
+    LoginOutlined, MaleOutlined, SearchOutlined, VpnKeyOutlined 
 } from "@mui/icons-material"
-import { useMemo, useState } from "react";
 
 
 interface Props {
@@ -34,12 +17,18 @@ interface Props {
 }
 
 export const Sidemenu: React.FC<Props> = ({}) => {
+    const router = useRouter()    
+    const { isMenuOpen, toggleMenu } = useContext(UIContext);   
     
-        
-   
+    const navigateTo = (path: string) => {
+        toggleMenu();
+        router.push(path);
+    }
+    
     return (
         <Drawer
-            open={ false }
+            open={ isMenuOpen }
+            onClose={ toggleMenu }
             anchor='right'
             sx={{ backdropFilter:'blur(4px)', transition: 'all .7s cubic-bezier(0.25, 0.8, 0.25, 1)' }}
         >
@@ -67,32 +56,41 @@ export const Sidemenu: React.FC<Props> = ({}) => {
                     <ListItemIcon>
                         <AccountCircleOutlined/>
                     </ListItemIcon>
-                    <ListItemText primary={'Perfil'} />
+                    <ListItemText primary={'Profile'} />
                 </ListItemButton>
 
                 <ListItemButton>
                     <ListItemIcon>
                         <ConfirmationNumberOutlined/>
                     </ListItemIcon>
-                    <ListItemText primary={'Mis Ordenes'} />
+                    <ListItemText primary={'My Orders'} />
                 </ListItemButton>
 
 
-                <ListItemButton sx={{ display: { xs: '', sm: 'none' } }}>
+                <ListItemButton 
+                    sx={{ display: { xs: '', sm: 'none' } }} 
+                    onClick={ ()=> navigateTo('/category/men') }
+                >
                     <ListItemIcon>
                         <MaleOutlined/>
                     </ListItemIcon>
-                    <ListItemText primary={'Hombres'} />
+                    <ListItemText primary={'Men'} />
                 </ListItemButton>
 
-                <ListItemButton sx={{ display: { xs: '', sm: 'none' } }}>
+                <ListItemButton 
+                    sx={{ display: { xs: '', sm: 'none' } }} 
+                    onClick={ ()=> navigateTo('/category/women') }
+                >
                     <ListItemIcon>
                         <FemaleOutlined/>
                     </ListItemIcon>
-                    <ListItemText primary={'Woman'} />
+                    <ListItemText primary={'Women'} />
                 </ListItemButton>
 
-                <ListItemButton sx={{ display: { xs: '', sm: 'none' } }}>
+                <ListItemButton 
+                    sx={{ display: { xs: '', sm: 'none' } }} 
+                    onClick={ ()=> navigateTo('/category/kid') }
+                >
                     <ListItemIcon>
                         <EscalatorWarningOutlined/>
                     </ListItemIcon>

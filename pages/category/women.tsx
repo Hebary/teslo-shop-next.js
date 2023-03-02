@@ -11,7 +11,8 @@ interface Props {
 }
 
 const WomenPage: NextPage<Props> = ({}) => {
-    const { products, isLoading, isError } = useProducts('/products?gender=women');
+
+    const { products, isLoading } = useProducts('/products?gender=women');
 
    return (
         <ShopLayout title={'Teslo Shop - Women'} pageDescription={'Find the Best Teslo Women Products Here'}>
