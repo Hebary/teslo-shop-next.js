@@ -1,4 +1,4 @@
-import { useContext } from "react"
+import { useContext, useState } from "react"
 import { useRouter } from 'next/router'
 import { UIContext } from "@/context"
 //Components
@@ -17,14 +17,22 @@ interface Props {
 }
 
 export const Sidemenu: React.FC<Props> = ({}) => {
+
     const router = useRouter()    
     const { isMenuOpen, toggleMenu } = useContext(UIContext);   
+    const [search, setSearch] = useState('');
     
-    const navigateTo = (path: string) => {
+           
+    const onSearch = () => {
+        if(search.trim().length === 0) return;
+            navigateTo(`/search/${ search }`);
+    }
+
+    const navigateTo = (path: string) => { 
         toggleMenu();
         router.push(path);
     }
-    
+ 
     return (
         <Drawer
             open={ isMenuOpen }
@@ -39,11 +47,14 @@ export const Sidemenu: React.FC<Props> = ({}) => {
                 <ListItem>
                     <Input
                         type='text'
+                        value={search}
+                        onChange={ (e) => setSearch( e.target.value ) }
+                        onKeyUp={ (e) => e.key === 'Enter' && onSearch()}
                         placeholder="Search..."
                         endAdornment={
                             <InputAdornment position="end">
                                 <IconButton
-                                    aria-label="toggle password visibility"
+                                    onClick={ onSearch }
                                 >
                                  <SearchOutlined />
                                 </IconButton>
