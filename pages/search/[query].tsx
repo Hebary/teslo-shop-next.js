@@ -1,5 +1,5 @@
 import { NextPage,GetServerSideProps } from 'next';
-import { Typography } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 import { ShopLayout } from '@/components/layouts';
 import { FullScreenLoading } from '@/components/ui';
 import { ProductList } from '../../components/products';
@@ -10,13 +10,24 @@ import { dbProducts } from '../../database';
 
 interface Props {
     productsBySearch: IProduct[]
+    foundProducts: boolean
+    query: string
 }
 
-const SearchPage: NextPage<Props> = ({ productsBySearch }) => {
+const SearchPage: NextPage<Props> = ({ productsBySearch, foundProducts, query }) => {
 
     return (
         <ShopLayout title={'Teslo-Shop - Search'} pageDescription={'Search the Best Teslo Products Here'}>
-            <Typography  variant='h4' sx={{ my:3 , ml:.5}}>{` Search results: ${ productsBySearch.length } `}</Typography>
+            <Typography  variant='h5' sx={{ mt:3 }}>Product search{productsBySearch.length < 52 ? `: ${productsBySearch.length} results` : ''}</Typography>
+            <Box display='flex' gap={1} alignItems='center' sx={{mb:5}}>
+                {
+                    foundProducts 
+                        ?   <Typography  variant='body1' sx={{ml:.5, my:1 }}>Results for</Typography> 
+                        :   <Typography  variant='body1' sx={{ml:.5, my:1 }}>No results for</Typography>
+                }
+                <Typography  variant='subtitle1' sx={{ my:1 }}> &#x2192; {` ' ${query} ' `}</Typography>
+            </Box>
+            
             <ProductList products={ productsBySearch }/>
         </ShopLayout>
     )
@@ -39,19 +50,16 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({params}) =>
     }
     
     let productsBySearch = await dbProducts.getProductsBySearch(query);
-    
-    if(!productsBySearch){
-        return {
-            redirect: {
-                destination: '/404',
-                permanent: false
-            }
-        }
+    const foundProducts = productsBySearch.length > 0;
+    if(!foundProducts){
+        productsBySearch = await dbProducts.getAllProducts();
     }
 
     return {
         props: {
-            productsBySearch
+            productsBySearch,
+            foundProducts,
+            query
         }
     }
 }

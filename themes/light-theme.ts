@@ -1,5 +1,5 @@
 import { createTheme } from '@mui/material/styles';
-import { red,  } from '@mui/material/colors';
+import { grey } from '@mui/material/colors';
 
 
 export const lightTheme = createTheme({
@@ -66,7 +66,7 @@ export const lightTheme = createTheme({
           borderRadius: 10,
           ":hover": {
             color:'#fff',
-            backgroundColor: 'rgba(0,0,0,.3)',
+            backgroundColor: grey[900],
             transition: 'all 0.3s ease-in-out'
           }
         }

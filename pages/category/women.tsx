@@ -16,7 +16,7 @@ const WomenPage: NextPage<Props> = ({}) => {
 
    return (
         <ShopLayout title={'Teslo Shop - Women'} pageDescription={'Find the Best Teslo Women Products Here'}>
-            <Typography variant='h4' sx={{ my:3 , ml:.5}}>Women</Typography>
+            <Typography variant='h4' className='red-hat-font' sx={{ my:3 , ml:.5}}>Women</Typography>
             {
             isLoading 
                 ? <FullScreenLoading/>

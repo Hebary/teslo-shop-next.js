@@ -33,6 +33,14 @@ export const dbProducts = {
             .lean();
         await db.disconnect();
         return  JSON.parse(JSON.stringify(products));
+    },
+    getAllProducts: async(): Promise<IProduct[]> => {
+        await db.connect();
+        const products = await Product.find()
+            .select( 'title images price inStock slug -_id')
+            .lean();
+        await db.disconnect();
+        return  JSON.parse(JSON.stringify(products));
     }
 }
 

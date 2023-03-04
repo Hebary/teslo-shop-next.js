@@ -15,7 +15,7 @@ const HomePage: NextPage<Props> = ({}) => {
 
    return (
         <ShopLayout title={'Teslo-Shop - Home'} pageDescription={'Find the Best Teslo Products Here'}>
-            <Typography variant='h4' sx={{ my:3 , ml:.5}}>All Products</Typography>
+            <Typography variant='h4' className='red-hat-font' sx={{ my:3 , ml:.5}}>All Products</Typography>
 
             {
             isLoading 

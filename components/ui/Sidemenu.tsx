@@ -18,7 +18,7 @@ interface Props {
 
 export const Sidemenu: React.FC<Props> = ({}) => {
 
-    const router = useRouter()    
+    const { push }= useRouter()    
     const { isMenuOpen, toggleMenu } = useContext(UIContext);   
     const [search, setSearch] = useState('');
     
@@ -30,7 +30,7 @@ export const Sidemenu: React.FC<Props> = ({}) => {
 
     const navigateTo = (path: string) => { 
         toggleMenu();
-        router.push(path);
+        push(path);
     }
  
     return (
@@ -47,9 +47,10 @@ export const Sidemenu: React.FC<Props> = ({}) => {
                 <ListItem>
                     <Input
                         type='text'
+                        autoFocus   
                         value={search}
                         onChange={ (e) => setSearch( e.target.value ) }
-                        onKeyUp={ (e) => e.key === 'Enter' && onSearch()}
+                        onKeyUp={ (e) => e.key === 'Enter' ? onSearch() : null}
                         placeholder="Search..."
                         endAdornment={
                             <InputAdornment position="end">
