@@ -1,12 +1,15 @@
 import { Box, Button, Typography } from "@mui/material";
-import type { ISizes } from "@/interfaces";
+import type { ISize } from "@/interfaces";
 
 interface Props {
   selectedSizes: string;
-  availableSizes: ISizes[];
+  availableSizes: ISize[];
+
+  //method
+  onSelectedSize: (size: ISize) => void;
 }
 
-export const SizeSelector: React.FC<Props> = ({ selectedSizes, availableSizes }) => {
+export const SizeSelector: React.FC<Props> = ({ selectedSizes, availableSizes, onSelectedSize }) => {
 
     return (
         <>
@@ -14,8 +17,12 @@ export const SizeSelector: React.FC<Props> = ({ selectedSizes, availableSizes })
             <Box display="flex" alignItems="center">
                 {   availableSizes.map( size => 
                     <Button 
-                    key={size}
+                        onClick={() => onSelectedSize(size)}
+                        key={size}
                         size='small' 
+                        color={selectedSizes === size 
+                        ? 'primary'
+                        : 'info'}
                     >{size}
                     </Button>
                 )}

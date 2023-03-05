@@ -3,9 +3,10 @@ import { Box, Button, Chip, Grid, Typography } from '@mui/material';
 import { ProductSlideshow, SizeSelector } from '@/components/products';
 import { ShopLayout } from '@/components/layouts';
 import { ItemCounter } from '@/components/ui';
-import { IProduct } from '@/interfaces';
+import { ICartProduct, IProduct, ISize } from '@/interfaces';
 import { dbProducts } from '@/database';
 import { ParsedUrlQuery } from 'querystring';
+import { useState } from 'react';
 
 
 
@@ -18,7 +19,24 @@ interface Params extends ParsedUrlQuery {
 }
 
 const ProductPage: NextPage<Props> = ({ product }) => {
+
+    const [temporalCartProduct, setTemporalCartProduct] = useState<ICartProduct>({
+        _id:product._id,
+        image:product.images[0],
+        price:product.price,
+        size:undefined,
+        slug:product.slug,
+        title: product.title,
+        gender: product.gender,
+        quantity: 1
+    })
  
+    const onSelectedSize = (size: ISize) => {
+        setTemporalCartProduct(currentProduct => ({
+                ...currentProduct,
+                size
+            }))
+        }
     return (
         <ShopLayout title={ `${product.title}` } pageDescription={` ${product.description}` }>
             <Grid container spacing={ 3 }>
@@ -34,7 +52,11 @@ const ProductPage: NextPage<Props> = ({ product }) => {
                         <Typography variant='subtitle1' sx={{mt:.5}} component='h2'>{`$ ${product.price}` }</Typography>
                     </Box>
                     
-                    <SizeSelector selectedSizes={''} availableSizes={product.sizes} />
+                    <SizeSelector 
+                        onSelectedSize={ (size) => onSelectedSize(size) }
+                        selectedSizes={temporalCartProduct.size!} 
+                        availableSizes={product.sizes} 
+                    />
 
                     <Box sx={{ my:2 }}>
                     {/* Quantity */}
@@ -43,17 +65,21 @@ const ProductPage: NextPage<Props> = ({ product }) => {
                     </Box>
                     {
                         product.inStock > 0 
-                            ? <Button className='circular-btn' fullWidth>Add to Cart</Button>
-                            : <Chip variant='outlined' sx={{width:'100%'}} color='error' label='Product not available.'/>
+                            ? 
+                                ( 
+                                <Button className='circular-btn' fullWidth>
+                                    { 
+                                    temporalCartProduct.size 
+                                        ? 'Add to Cart' 
+                                        : 'Select a size' 
+                                    }
+                                </Button>
+                            )
+                            : <Chip variant='outlined' sx={{ width:'100%' }} color='error' label='Product not available.'/>
                     }
-                    
-
-                    {/* <Chip label='Sorry, this product is not available.'/> */}
-
                     <Box sx={{ my:2 }}>
-                        <Typography variant='subtitle2' sx={{mb:1.5}} component='h2'>Description</Typography>
+                        <Typography variant='subtitle2' sx={{ mb: 1.5 }} component='h2'>Description</Typography>
                         <Typography variant='body2' component='h2'>{ product.description }</Typography>
-                    
                     </Box>
                 </Grid>
             </Grid>
