@@ -17,12 +17,14 @@ export const SizeSelector: React.FC<Props> = ({ selectedSizes, availableSizes, o
             <Box display="flex" alignItems="center">
                 {   availableSizes.map( size => 
                     <Button 
-                        onClick={() => onSelectedSize(size)}
-                        key={size}
+                        onClick={ () => onSelectedSize(size) }
+                        key={ size }
                         size='small' 
-                        color={selectedSizes === size 
-                        ? 'primary'
-                        : 'info'}
+                        color={ 
+                            selectedSizes === size 
+                                ? 'primary'
+                                : 'info'
+                            }
                     >{size}
                     </Button>
                 )}

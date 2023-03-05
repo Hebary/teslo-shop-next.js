@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { NextPage, GetStaticPaths, GetStaticProps } from 'next';
 import { Box, Button, Chip, Grid, Typography } from '@mui/material';
 import { ProductSlideshow, SizeSelector } from '@/components/products';
@@ -6,7 +7,6 @@ import { ItemCounter } from '@/components/ui';
 import { ICartProduct, IProduct, ISize } from '@/interfaces';
 import { dbProducts } from '@/database';
 import { ParsedUrlQuery } from 'querystring';
-import { useState } from 'react';
 
 
 
@@ -20,16 +20,18 @@ interface Params extends ParsedUrlQuery {
 
 const ProductPage: NextPage<Props> = ({ product }) => {
 
+
     const [temporalCartProduct, setTemporalCartProduct] = useState<ICartProduct>({
-        _id:product._id,
-        image:product.images[0],
-        price:product.price,
-        size:undefined,
-        slug:product.slug,
+        _id: product._id,
+        image: product.images[0],
+        price: product.price,
+        size: undefined,
+        slug: product.slug,
         title: product.title,
         gender: product.gender,
         quantity: 1
     })
+
  
     const onSelectedSize = (size: ISize) => {
         setTemporalCartProduct(currentProduct => ({
@@ -37,6 +39,19 @@ const ProductPage: NextPage<Props> = ({ product }) => {
                 size
             }))
         }
+    
+        const onAddProduct = () => {
+            console.log(temporalCartProduct)
+        }
+    
+        const onUpdatedQuantity = (quantity: number) => {
+            setTemporalCartProduct(currentProduct => ({
+                ...currentProduct,
+                quantity
+            }))
+        }
+    
+
     return (
         <ShopLayout title={ `${product.title}` } pageDescription={` ${product.description}` }>
             <Grid container spacing={ 3 }>
@@ -61,13 +76,23 @@ const ProductPage: NextPage<Props> = ({ product }) => {
                     <Box sx={{ my:2 }}>
                     {/* Quantity */}
                         <Typography variant='subtitle2' component='h2'>Quantity</Typography>
-                        <ItemCounter stock={product.inStock}/>
+                        
+                        <ItemCounter
+                            currentValue={ temporalCartProduct.quantity }
+                            maxValue={ product.inStock >10 ? 10 : product.inStock }
+                            updatedQuantity={ onUpdatedQuantity }
+                        />
+
                     </Box>
                     {
                         product.inStock > 0 
                             ? 
                                 ( 
-                                <Button className='circular-btn' fullWidth>
+                                <Button 
+                                    onClick={()=>onAddProduct()}
+                                    className='circular-btn' fullWidth
+                                
+                                >
                                     { 
                                     temporalCartProduct.size 
                                         ? 'Add to Cart' 
