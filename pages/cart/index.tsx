@@ -13,7 +13,7 @@ const Cart: NextPage<Props> = ({}) => {
    
     return (
         <ShopLayout title={'order summary page'} pageDescription='summary client order'>
-            <Typography variant='h1' component='h1'  sx={{mb:1.5}}>Checkout - Summary</Typography>
+            <Typography variant='h1' component='h1'  sx={{ mb: 1.5 }}>Checkout - Summary</Typography>
             <Grid container>
                 <Grid item xs={ 12 } sm={ 7 }>
                     <CartList editable />

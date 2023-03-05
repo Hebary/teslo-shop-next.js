@@ -3,7 +3,6 @@ import { ICartProduct } from '../../interfaces/cart';
 
 
 interface ContextProps {
-    
     cart: ICartProduct[]
 }
 

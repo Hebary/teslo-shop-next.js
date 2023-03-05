@@ -41,11 +41,14 @@ const ProductPage: NextPage<Props> = ({ product }) => {
                         <Typography variant='subtitle2' component='h2'>Quantity</Typography>
                         <ItemCounter stock={product.inStock}/>
                     </Box>
+                    {
+                        product.inStock > 0 
+                            ? <Button className='circular-btn' fullWidth>Add to Cart</Button>
+                            : <Chip variant='outlined' sx={{width:'100%'}} color='error' label='Product not available.'/>
+                    }
                     
-                    
-                    <Button className='circular-btn' fullWidth>Add to Cart</Button>
 
-                    {/* <Chip label="Sorry, this product is not available."/> */}
+                    {/* <Chip label='Sorry, this product is not available.'/> */}
 
                     <Box sx={{ my:2 }}>
                         <Typography variant='subtitle2' sx={{mb:1.5}} component='h2'>Description</Typography>
@@ -69,7 +72,7 @@ export const getStaticPaths: GetStaticPaths<Params> = async (ctx) => {
                 slug
             }
         })),
-        fallback: "blocking"
+        fallback: 'blocking'
     }
 }
 

@@ -11,6 +11,7 @@ interface Props {
 }
 
 const HomePage: NextPage<Props> = ({}) => {
+    
     const { products, isLoading } = useProducts('/products');
 
    return (
