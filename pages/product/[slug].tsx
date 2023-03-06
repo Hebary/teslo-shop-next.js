@@ -68,10 +68,10 @@ const ProductPage: NextPage<Props> = ({ product }) => {
                 </Grid>
                 <Grid item xs={ 12 } sm={ 5 }>
 
-                    <Box display='flex' sx={{my:2}} flexDirection='column'>
+                    <Box display='flex' sx={{ my:2 }} flexDirection='column'>
                         {/* Titles */}
                         <Typography variant='h1' component='h1'>{ product.title }</Typography>
-                        <Typography variant='subtitle1' sx={{mt:.5}} component='h2'>{`$ ${product.price}` }</Typography>
+                        <Typography variant='subtitle1' sx={{ mt: .5 }} component='h2'>{`$ ${ product.price }` }</Typography>
                     </Box>
                     
                     <SizeSelector 

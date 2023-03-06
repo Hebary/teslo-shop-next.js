@@ -1,4 +1,4 @@
-import { ICartProduct } from '@/interfaces';
+import { ICartProduct, ISize } from '@/interfaces';
 import { useEffect, useReducer } from 'react';
 import { CartContext, cartReducer } from './';
 import Cookie from 'js-cookie'
@@ -58,12 +58,16 @@ export const CartProvider: React.FC<Props> = ({children}) => {
         dispatch({type:'[CART]-UPDATE_PRODUCT_IN_CART', payload: product });
     }
 
+    const removeProductFromCart = (product: ICartProduct) => {
+        dispatch({type:'[CART]-REMOVE_PRODUCT_FROM_CART', payload: product });
+    }
    return (
     <CartContext.Provider
         value={{
                 ...state,
                 addProductToCart,
-                updateCartProduct
+                updateCartProduct,
+                removeProductFromCart
             }}>
         {children}
     </CartContext.Provider>
