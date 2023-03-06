@@ -36,9 +36,10 @@ export const ProductCard: React.FC<Props> = ({ product }) => {
                     {   
                         (product.inStock) === 0 && (
                             <Chip
+                                // variant='outlined'
                                 color='primary'
                                 label='Product not available'
-                                sx={{position:'absolute', top:15, right:15, zIndex:99}}
+                                sx={{position:'absolute', top:5, right:5, zIndex:99}}
                             />
                         )
                     }   
