@@ -3,7 +3,8 @@ import { ICartProduct } from '@/interfaces';
 
 
 type CartActionType = 
-| { type: '[CART]-LOAD_FROM_COOKIES', action: ICartProduct[] }
+| { type: '[CART]-LOAD_FROM_COOKIES', payload: ICartProduct[] }
+| { type: '[CART]-UPDATE_CART_PRODUCTS', payload: ICartProduct[] }
 
 
 export const cartReducer = (state: CartState, action: CartActionType): CartState => {
@@ -14,6 +15,11 @@ export const cartReducer = (state: CartState, action: CartActionType): CartState
             return{
               ...state,
            }
+        case '[CART]-UPDATE_CART_PRODUCTS':
+          return {
+            ...state,
+            cart: [...action.payload]
+          }
 
     default: 
             return state; 

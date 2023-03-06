@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 import { NextPage, GetStaticPaths, GetStaticProps } from 'next';
 import { Box, Button, Chip, Grid, Typography } from '@mui/material';
 import { ProductSlideshow, SizeSelector } from '@/components/products';
@@ -7,6 +7,8 @@ import { ItemCounter } from '@/components/ui';
 import { ICartProduct, IProduct, ISize } from '@/interfaces';
 import { dbProducts } from '@/database';
 import { ParsedUrlQuery } from 'querystring';
+import { CartContext } from '@/context';
+import { useRouter } from 'next/router';
 
 
 
@@ -20,6 +22,9 @@ interface Params extends ParsedUrlQuery {
 
 const ProductPage: NextPage<Props> = ({ product }) => {
 
+    const { addProductToCart } = useContext(CartContext)
+
+    const { push } = useRouter()
 
     const [temporalCartProduct, setTemporalCartProduct] = useState<ICartProduct>({
         _id: product._id,
@@ -41,7 +46,9 @@ const ProductPage: NextPage<Props> = ({ product }) => {
         }
     
         const onAddProduct = () => {
-            console.log(temporalCartProduct)
+            if( !temporalCartProduct.size ) return;
+            addProductToCart(temporalCartProduct);
+            // push('/cart');
         }
     
         const onUpdatedQuantity = (quantity: number) => {
@@ -79,7 +86,7 @@ const ProductPage: NextPage<Props> = ({ product }) => {
                         
                         <ItemCounter
                             currentValue={ temporalCartProduct.quantity }
-                            maxValue={ product.inStock >10 ? 10 : product.inStock }
+                            maxValue={ product.inStock > 10 ? 10 : product.inStock }
                             updatedQuantity={ onUpdatedQuantity }
                         />
 
