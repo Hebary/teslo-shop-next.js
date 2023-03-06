@@ -14,6 +14,7 @@ export const cartReducer = (state: CartState, action: CartActionType): CartState
        case '[CART]-LOAD_FROM_COOKIES':
             return{
               ...state,
+              cart: [...action.payload]
            }
         case '[CART]-UPDATE_CART_PRODUCTS':
           return {

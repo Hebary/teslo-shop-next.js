@@ -48,7 +48,7 @@ const ProductPage: NextPage<Props> = ({ product }) => {
         const onAddProduct = () => {
             if( !temporalCartProduct.size ) return;
             addProductToCart(temporalCartProduct);
-            // push('/cart');
+            push('/cart');
         }
     
         const onUpdatedQuantity = (quantity: number) => {
