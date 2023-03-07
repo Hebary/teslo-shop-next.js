@@ -7,6 +7,16 @@ type CartActionType =
 | { type: '[CART]-UPDATE_CART_PRODUCTS', payload: ICartProduct[] }
 | { type: '[CART]-UPDATE_PRODUCT_IN_CART', payload: ICartProduct }
 | { type: '[CART]-REMOVE_PRODUCT_FROM_CART', payload: ICartProduct }
+| { 
+    type: '[CART]-UPDATE_ORDER_SUMMARY', 
+    payload: {
+      numberOfItems: number,
+      subtotal: number,
+      tax: number
+      total:number
+    }
+
+  }
 
 
 export const cartReducer = (state: CartState, action: CartActionType): CartState => {
@@ -37,6 +47,12 @@ export const cartReducer = (state: CartState, action: CartActionType): CartState
           ...state,
           cart: state.cart.filter((product) => !(product._id === action.payload._id && product.size === action.payload.size))
         }
+      case '[CART]-UPDATE_ORDER_SUMMARY':
+        return{
+          ...state,
+          ...action.payload
+        }
+
       default: 
           return state; 
     }

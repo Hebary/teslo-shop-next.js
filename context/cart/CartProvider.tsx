@@ -8,11 +8,19 @@ interface Props {
 }
 
 export interface CartState {
-    cart: ICartProduct[]
+    cart: ICartProduct[],
+    numberOfItems: number,
+    subtotal: number,
+    tax: number,
+    total: number
 }
 
 const CART_INITIAL_STATE: CartState = {
-   cart: []
+    cart: [],
+    numberOfItems: 0,
+    subtotal :0,
+    tax: 0,
+    total: 0
 }
 
 export const CartProvider: React.FC<Props> = ({children}) => {
@@ -32,6 +40,21 @@ export const CartProvider: React.FC<Props> = ({children}) => {
 
     useEffect(() => {
         Cookie.set('cart', JSON.stringify(state.cart));
+    }, [state.cart])
+
+    useEffect(() => {
+
+        const numberOfItems = state.cart.reduce((prev, curr) => prev + curr.quantity, 0)
+        const subtotal = state.cart.reduce((prev, curr) => prev + ( curr.price * curr.quantity ), 0)
+        const taxRate = Number(process.env.NEXT_PUBLIC_TAXRATE || 0)
+        
+        const orderSummary = {
+            numberOfItems,
+            subtotal,
+            tax: subtotal * taxRate,
+            total: subtotal + subtotal * (taxRate + 1)
+        }
+        dispatch({type:'[CART]-UPDATE_ORDER_SUMMARY', payload: orderSummary })
     }, [state.cart])
     
 
