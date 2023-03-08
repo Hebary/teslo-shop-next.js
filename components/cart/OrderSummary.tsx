@@ -12,7 +12,7 @@ export const OrderSummary: React.FC = () => {
     
     return (
         <Grid container>
-            <Grid item sx={{mt:1}} xs={ 6 } >
+            <Grid item sx={{ mt:1 }} xs={ 6 } >
                 <Typography >Selected</Typography>    
             </Grid>     
 
