@@ -8,7 +8,4 @@ export interface IUser {
     updatedAt?: string;
 }
 
-type Role = {
-    client: string;
-    admin: string;
-}
+type Role = 'client' | 'admin';
