@@ -38,6 +38,7 @@ const loginUser = async (req: NextApiRequest, res: NextApiResponse<Data>) => {
     await db.disconnect();
 
     if(!user) {
+        await db.disconnect();
         return res.status(404).json({ message: 'User not found' })
     }
     
