@@ -1,4 +1,4 @@
-import jwt from 'jsonwebtoken'
+import jwt, { JwtPayload } from 'jsonwebtoken'
 
 export const utils = {
 
@@ -26,15 +26,30 @@ export const utils = {
             { expiresIn: '1d' }
         )
     },
+
+    isValidToken: async (token: string): Promise<string> => {
+        if( ! process.env.JWT_SECRET ) throw new Error('JWT_SECRET not found');
+        return new Promise((resolve, reject) => {
+            try {
+                jwt.verify(token, process.env.JWT_SECRET || '', (err, payload) => {
+                    if(err) reject(err)
+                    const { _id } = payload as JwtPayload
+                    resolve(_id)
+                })
+            } catch (error) {
+                reject(error)
+            }
+        })
+    },
+
     
-     isValidEmail: (email: string): boolean => {
+    isValidEmail: (email: string): boolean => {
   
   const match = String(email)
       .toLowerCase()
       .match(
         /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
         );
-        
         return !!match;
     },
     

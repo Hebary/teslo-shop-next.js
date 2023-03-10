@@ -57,7 +57,7 @@ const createAccount = async (req: NextApiRequest, res: NextApiResponse<Data>) =>
     const newUser = new User({ 
             name, 
             email: email.toLowerCase(), 
-            password: bcrypt.hashSync(password) ,
+            password: bcrypt.hashSync(password),
             role: 'client'
         })
 
