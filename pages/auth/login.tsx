@@ -34,7 +34,11 @@ const Login: NextPage<Props> = ({}) => {
                             <Grid item xs={ 12 } >
                                 <TextField 
                                     type='email'
-                                    {...register('email')}
+                                    {...register('email',{
+                                        required: 'Email is required',
+                                    })}
+                                    error={!!errors.email}
+                                    helperText={errors.email?.message}
                                     variant='filled' 
                                     fullWidth 
                                     label='Email' />
@@ -42,7 +46,14 @@ const Login: NextPage<Props> = ({}) => {
 
                             <Grid item xs={ 12 } >
                                 <TextField
-                                    {...register('password')} 
+                                    {...register('password',{
+                                        required: 'Password is required',
+                                        minLength: {
+                                            value: 6, message:'Password must be at least 6 characters'
+                                        }
+                                    })} 
+                                    error={!!errors.password}
+                                    helperText={errors.password?.message}
                                     variant='filled' 
                                     type={'password'} 
                                     fullWidth 
