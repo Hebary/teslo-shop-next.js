@@ -5,6 +5,9 @@ import { createContext } from 'react';
 interface ContextProps {
     isLogged: boolean;
     user?: IUser
+
+    // Methods
+    loginUser: (email: string, password: string) => Promise<boolean>;
 }
 
 export const AuthContext = createContext({} as ContextProps);
