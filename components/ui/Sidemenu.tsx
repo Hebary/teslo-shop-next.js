@@ -110,18 +110,22 @@ export const Sidemenu: React.FC<Props> = ({}) => {
                 </ListItemButton>
 
 
-                <ListItemButton>
+                <ListItemButton
+                    onClick={ ()=> navigateTo('/auth/login')}
+                >
                     <ListItemIcon>
                         <VpnKeyOutlined/>
                     </ListItemIcon>
-                    <ListItemText primary={'Sign In'} />
+                    <ListItemText primary={'Log in'} />
                 </ListItemButton>
 
-                <ListItemButton>
+                <ListItemButton
+                    onClick={ ()=> navigateTo('/auth/register')}
+                >
                     <ListItemIcon>
                         <LoginOutlined/>
                     </ListItemIcon>
-                    <ListItemText primary={'Sign Out'} />
+                    <ListItemText primary={'Log out'} />
                 </ListItemButton>
 
 

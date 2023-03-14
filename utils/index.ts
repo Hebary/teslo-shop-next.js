@@ -56,7 +56,7 @@ export const utils = {
     isEmail: (email: string): string | undefined => {
       return utils.isValidEmail(email) 
         ? undefined
-        : 'El correo no parece ser válido';
+        : 'Email is not valid';
     }
 }
     

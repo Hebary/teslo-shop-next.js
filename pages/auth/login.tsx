@@ -1,25 +1,41 @@
+import { useState } from 'react';
 import { NextPage } from 'next';
 import NextLink from 'next/link';
-import { Box, Button, Grid, Link, TextField, Typography } from '@mui/material';
 import { useForm } from 'react-hook-form';
+import { Box, Button, Chip, Grid, Link, TextField, Typography } from '@mui/material';
+import { ErrorOutline } from '@mui/icons-material';
 import { AuthLayout } from '@/components/layouts';
+import { utils } from '@/utils';
+import { tesloApi } from '@/api';
 
-
-
-interface Props {
-}
 
 type FormData = {
     email: string;
     password: string;
 }
 
-const Login: NextPage<Props> = ({}) => {
-    const { register, handleSubmit, watch, formState: { errors } } = useForm<FormData>();
+const Login: NextPage = ({}) => {
+ 
+    const { register, handleSubmit, formState: { errors } } = useForm<FormData>();
+    
+    const [error, setError] = useState(false);
 
-    const onLogin = (data: FormData) => {
-        console.log({data});
+    const onLogin = async ({ email, password }: FormData) => {
+        
+        setError(false);
+ 
+        try {
+            const { data } = await tesloApi.post('/user/login', { email, password });
+            const { token, user } = data;
+            console.log({ token, user })
+        } catch (error) {
+            setError(true);
+            setTimeout(() => setError(false), 3000);
+            
+        }
+        // TODO: navegar a la pagina en la que el ususario estaba. 
     }
+
    return (
         <AuthLayout title='Login page'>
 
@@ -28,7 +44,18 @@ const Login: NextPage<Props> = ({}) => {
                         <Grid container spacing={ 3 }>
 
                             <Grid item xs={ 12 }>
-                                <Typography variant='h1' component='h1' fontWeight={400} sx={{ml:1}}>Login</Typography>
+                                <Typography variant='h1' component='h1' fontWeight={ 400 } sx={{ ml:1 }}>Login</Typography>
+                                
+                                <Chip
+                                    
+                                    label='Please check your credentials'
+                                    color='error'
+                                    className='fadeIn'
+                                    icon= {<ErrorOutline/>}
+                                    variant='outlined'
+                                    sx={{ display: error ? 'flex' : 'none' , mt:1 }}
+                                />
+
                             </Grid>
 
                             <Grid item xs={ 12 } >
@@ -36,8 +63,9 @@ const Login: NextPage<Props> = ({}) => {
                                     type='email'
                                     {...register('email',{
                                         required: 'Email is required',
+                                        validate: utils.isEmail
                                     })}
-                                    error={!!errors.email}
+                                    error={ !!errors.email }
                                     helperText={errors.email?.message}
                                     variant='filled' 
                                     fullWidth 

@@ -1,36 +1,110 @@
+import { useState } from 'react';
 import { NextPage } from 'next';
 import NextLink from 'next/link';
+import { ErrorOutline } from '@mui/icons-material';
+import { Box, Button, Chip, Grid, Link, TextField, Typography } from '@mui/material';
+import { useForm } from 'react-hook-form';
+import { tesloApi } from '@/api';
 import { AuthLayout } from '@/components/layouts';
-import { Box, Button, Grid, Link, TextField, Typography } from '@mui/material';
+import { utils } from '@/utils';
 
 
-interface Props {
+type FormData =  {
+    name: string;
+    email: string;
+    password: string;
 }
 
-const RegisterPage: NextPage<Props> = ({}) => {
-   return (
+const RegisterPage: NextPage = () => {
+   
+    const { register, handleSubmit, formState: { errors } } = useForm<FormData>();
+    
+    const [error, setError] = useState(false);
+    
+    const onRegister = async ({ name, email, password } : FormData) => {
+            setError(false);
+            try {
+                const { data } = await tesloApi.post('/user/register', { name, email, password})
+                console.log(data)
+            } catch (error) {
+                setError(true);
+                setTimeout(() => setError(false), 3000);
+            }
+    }
+
+    return (
         <AuthLayout title='Register Page'>
+            <form onSubmit={ handleSubmit(onRegister) }>
                 <Box  sx={{ width:'350px' }}>
                     <Grid container spacing={ 3 }>
                         
                         <Grid item xs={ 12 }>
                             <Typography variant='h1' component='h1' fontWeight={400} sx={{ml:1}}>Create account</Typography>
+                        
+                            <Chip
+                                label='We already have an account with that email'
+                                color='error'
+                                className='fadeIn'
+                                icon= {<ErrorOutline/>}
+                                variant='outlined'
+                                sx={{ display: error ?  'flex' : 'none' , mt:1 }}
+                            />
                         </Grid>
                         
                         <Grid item xs={ 12 } >
-                            <TextField variant='filled' fullWidth label='Name' />
+                            <TextField 
+                                variant='filled'
+                                fullWidth
+                                error={ !!errors.name }
+                                helperText={errors.name?.message}
+                                label='Full name' 
+                                {...register('name',{
+                                    required: 'Name is required',
+                                    minLength: {
+                                        value: 2, message:'Name must be at least 2 characters' 
+                                    }
+                                })}
+                            />
                         </Grid>
 
                         <Grid item xs={ 12 } >
-                            <TextField variant='filled' fullWidth label='Email' />
+                            <TextField 
+                                variant='filled' 
+                                fullWidth 
+                                error = {!!errors.email}
+                                helperText={errors.email?.message}
+                                label='Email' 
+                                {...register('email',{
+                                    required: 'Email is required',
+                                    validate: utils.isEmail
+                                })}
+                            />
                         </Grid>
 
                         <Grid item xs={ 12 } >
-                            <TextField variant='filled' type={'password'} fullWidth label='Password' />
+                            <TextField 
+                                variant='filled' 
+                                type={'password'}
+                                error={ !!errors.password }
+                                helperText={errors.password?.message}
+                                fullWidth 
+                                label='Password' 
+                                {...register('password',{
+                                    required: 'Password is required',
+                                    minLength: {
+                                        value: 6, message:'Password must be at least 6 characters'
+                                    }
+                                })}
+                            />
                         </Grid>
 
                         <Grid item xs={ 12 } display='flex' justifyContent='center'>
-                            <Button color='secondary' fullWidth className='circular-btn' size='large' >
+                            <Button
+                                type='submit' 
+                                color='secondary' 
+                                fullWidth 
+                                className='circular-btn' 
+                                size='large' >
                                 Create account
                             </Button>
                         </Grid>
@@ -47,6 +121,7 @@ const RegisterPage: NextPage<Props> = ({}) => {
 
                     </Grid>
                 </Box>
+            </form>
         </AuthLayout>
     )
 }
