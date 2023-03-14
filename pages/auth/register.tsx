@@ -33,7 +33,7 @@ const RegisterPage: NextPage = () => {
         
         const { hasError, message } = await registerUser(name, email, password);
         setError(false);
-        
+        console.log(hasError)
         if(hasError) {
             setError(true);
             setErrorMessage(message!)

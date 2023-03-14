@@ -31,7 +31,7 @@ const Login: NextPage = () => {
         setError(false);
         
         const validLogin = await loginUser(email, password);
-        
+        console.log(validLogin)
         if (!validLogin) {
             setError(true);
             setTimeout(() => setError(false), 3000);

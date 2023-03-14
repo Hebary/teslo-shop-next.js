@@ -1,4 +1,4 @@
-import { useReducer } from 'react';
+import { useEffect, useReducer } from 'react';
 import axios from 'axios';
 import Cookie from 'js-cookie';
 import { AuthContext, authReducer } from './';
@@ -24,10 +24,30 @@ export const AuthProvider: React.FC<Props> = ({children}) => {
 
     const [state, dispatch] = useReducer(authReducer, AUTH_INITIAL_STATE);
 
+    useEffect(() => {
+        checkToken();
+    }, [])
+
+    const checkToken = async () => {
+        try {
+            const { data } = await tesloApi.get('/user/validate-jwt');
+            const { user, token } = data;
+            
+            Cookie.set('token', token);
+                    dispatch({
+                        type: '[AUTH]-LOG_IN',
+                        payload: user
+                    })
+            
+        } catch (error) {
+            Cookie.remove('token');
+        }
+    }
+
     const loginUser = async ( email: string, password: string ): Promise<boolean>=> {
         
         try {
-            const { data } = await tesloApi.post('/auth/login', { email, password })    
+            const { data } = await tesloApi.post('/user/login', { email, password })    
             const { user, token} = data;
             
             Cookie.set('token', token);
@@ -47,8 +67,8 @@ export const AuthProvider: React.FC<Props> = ({children}) => {
     const registerUser = async ( name:string, email: string, password: string ): Promise<{ hasError: boolean, message?:string }> => {
             
             try {
-                const { data } = await tesloApi.post('/auth/register', { name, email, password })    
-                const { user, token} = data;
+                const { data } = await tesloApi.post('/user/register', { name, email, password })    
+                const { user, token  } = data;
                 
                 Cookie.set('token', token);
     
