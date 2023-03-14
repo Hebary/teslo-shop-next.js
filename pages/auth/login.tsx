@@ -1,7 +1,7 @@
 import { useContext, useState } from 'react';
-import { useRouter } from 'next/router'
 import { NextPage } from 'next';
 import NextLink from 'next/link';
+import { useRouter } from 'next/router'
 import { useForm } from 'react-hook-form';
 import { Box, Button, Chip, Grid, Link, TextField, Typography } from '@mui/material';
 import { ErrorOutline } from '@mui/icons-material';
@@ -15,7 +15,7 @@ type FormData = {
     password: string;
 }
 
-const Login: NextPage = ({}) => {
+const Login: NextPage = () => {
     
     const { replace } = useRouter()
 
