@@ -13,6 +13,7 @@ export interface CartState {
     subtotal: number,
     tax: number,
     total: number
+    isLoaded:boolean
 }
 
 const CART_INITIAL_STATE: CartState = {
@@ -20,7 +21,9 @@ const CART_INITIAL_STATE: CartState = {
     numberOfItems: 0,
     subtotal :0,
     tax: 0,
-    total: 0
+    total: 0,
+    isLoaded: false
+
 }
 
 export const CartProvider: React.FC<Props> = ({children}) => {
@@ -90,7 +93,7 @@ export const CartProvider: React.FC<Props> = ({children}) => {
                 ...state,
                 addProductToCart,
                 updateCartProduct,
-                removeProductFromCart
+                removeProductFromCart,
             }}>
         {children}
     </CartContext.Provider>

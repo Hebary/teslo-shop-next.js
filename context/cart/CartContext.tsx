@@ -11,6 +11,7 @@ interface ContextProps {
     subtotal :number 
     tax: number 
     total: number 
+    isLoaded:boolean
     //methods
     
     addProductToCart: (product: ICartProduct) => void
