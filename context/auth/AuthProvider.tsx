@@ -29,6 +29,9 @@ export const AuthProvider: React.FC<Props> = ({children}) => {
     }, [])
 
     const checkToken = async () => {
+
+        if( !Cookie.get('token') ) return;
+
         try {
             const { data } = await tesloApi.get('/user/validate-jwt');
             const { user, token } = data;
