@@ -17,7 +17,7 @@ type FormData = {
 
 const Login: NextPage = () => {
     
-    const { replace } = useRouter()
+    const { replace, query } = useRouter()
 
     const { loginUser } = useContext(AuthContext);
  
@@ -38,8 +38,9 @@ const Login: NextPage = () => {
             return;
         }
 
-        // TODO: navegar a la pagina en la que el ususario estaba. 
-        replace('/');
+        // navigate to previous url 
+        const destination = query.p?.toString() || '/';
+        replace(destination);
     }
 
    return (
@@ -59,7 +60,7 @@ const Login: NextPage = () => {
                                     className='fadeIn'
                                     icon= {<ErrorOutline/>}
                                     variant='outlined'
-                                    sx={{ display: error ? 'flex' : 'none' , mt:1 }}
+                                    sx={{ display: error ? 'flex' : 'none' , mt: 1 }}
                                 />
 
                             </Grid>
@@ -101,7 +102,9 @@ const Login: NextPage = () => {
                             </Grid>
 
                             <Grid item xs={ 12 } display='flex' justifyContent='end'>
-                                <NextLink href='register' passHref>
+                                <NextLink 
+                                    href={query.p ? `/auth/register?p=${ query.p }` : `/auth/register`} 
+                                    passHref>
                                     <Link component='span'>
                                         <Typography variant='body2' color='black'>
                                             Don&apos;t have an account? Register

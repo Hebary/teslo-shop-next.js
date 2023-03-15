@@ -1,6 +1,7 @@
 import { useEffect, useReducer } from 'react';
+import { useRouter } from 'next/router'
 import axios from 'axios';
-import Cookie from 'js-cookie';
+import Cookies from 'js-cookie';
 import { AuthContext, authReducer } from './';
 import { IUser } from '@/interfaces/';
 import { tesloApi } from '@/api';
@@ -24,26 +25,28 @@ export const AuthProvider: React.FC<Props> = ({children}) => {
 
     const [state, dispatch] = useReducer(authReducer, AUTH_INITIAL_STATE);
 
+    const { reload } = useRouter();
+
     useEffect(() => {
         checkToken();
     }, [])
 
     const checkToken = async () => {
 
-        if( !Cookie.get('token') ) return;
+        if( !Cookies.get('token') ) return;
 
         try {
             const { data } = await tesloApi.get('/user/validate-jwt');
             const { user, token } = data;
             
-            Cookie.set('token', token);
+            Cookies.set('token', token);
                     dispatch({
                         type: '[AUTH]-LOG_IN',
                         payload: user
                     })
             
         } catch (error) {
-            Cookie.remove('token');
+            Cookies.remove('token');
         }
     }
 
@@ -53,7 +56,7 @@ export const AuthProvider: React.FC<Props> = ({children}) => {
             const { data } = await tesloApi.post('/user/login', { email, password })    
             const { user, token} = data;
             
-            Cookie.set('token', token);
+            Cookies.set('token', token);
 
             dispatch({
                 type: '[AUTH]-LOG_IN',
@@ -73,7 +76,7 @@ export const AuthProvider: React.FC<Props> = ({children}) => {
                 const { data } = await tesloApi.post('/user/register', { name, email, password })    
                 const { user, token  } = data;
                 
-                Cookie.set('token', token);
+                Cookies.set('token', token);
     
                 dispatch({
                     type: '[AUTH]-LOG_IN',
@@ -97,6 +100,12 @@ export const AuthProvider: React.FC<Props> = ({children}) => {
             }
         }
 
+    const logout = () => {
+        Cookies.remove('cart');
+        Cookies.remove('token');
+        reload();        
+    }
+
     return (
         <AuthContext.Provider
             value={{
@@ -104,7 +113,8 @@ export const AuthProvider: React.FC<Props> = ({children}) => {
 
                     //Methods
                     loginUser,
-                    registerUser
+                    registerUser,
+                    logout
                 }}>
             {children}
         </AuthContext.Provider>

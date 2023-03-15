@@ -21,7 +21,7 @@ const RegisterPage: NextPage = () => {
     
     const { registerUser } = useContext(AuthContext);
     
-    const { replace } = useRouter()    
+    const { replace, query } = useRouter()    
 
     const { register, handleSubmit, formState: { errors } } = useForm<FormData>();
     
@@ -40,8 +40,8 @@ const RegisterPage: NextPage = () => {
             setTimeout(() => setError(false), 3000);
             return;
         }
-
-        replace('/');
+        const destination = query.p?.toString() || '/';
+        replace(destination);
     }
 
     return (
@@ -122,7 +122,10 @@ const RegisterPage: NextPage = () => {
                         </Grid>
 
                         <Grid item xs={ 12 } display='flex' justifyContent='end'>
-                            <NextLink href='login' passHref>
+                            <NextLink 
+                                href={query.p ? `/auth/login?p=${ query.p }` : `/auth/login`} 
+                                passHref
+                                >
                                 <Link component='span'>
                                     <Typography variant='body2' color='black'>
                                         Already have an account? Login

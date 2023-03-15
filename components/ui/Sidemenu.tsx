@@ -17,9 +17,9 @@ export const Sidemenu: React.FC = () => {
 
     const { isMenuOpen, toggleMenu } = useContext(UIContext);
 
-    const { isLogged, user } = useContext(AuthContext)
+    const { isLogged, user, logout } = useContext(AuthContext)
     
-    const { push }= useRouter()    
+    const { push, asPath }= useRouter()    
     
     const [search, setSearch] = useState('');
     
@@ -33,7 +33,8 @@ export const Sidemenu: React.FC = () => {
         toggleMenu();
         push(path);
     }
- 
+    
+
     return (
         <Drawer
             open={ isMenuOpen }
@@ -115,7 +116,7 @@ export const Sidemenu: React.FC = () => {
                 {
                     !isLogged ?
                     <ListItemButton
-                        onClick={ ()=> navigateTo('/auth/login')}
+                        onClick={ ()=> navigateTo(`/auth/login?p=${ asPath }`)}
                     >
                         <ListItemIcon>
                             <VpnKeyOutlined/>
@@ -124,13 +125,13 @@ export const Sidemenu: React.FC = () => {
                     </ListItemButton>
                     :
                     <ListItemButton
-                        onClick={ ()=> navigateTo('/auth/register')}
-                        >
-                    <ListItemIcon>
-                        <LoginOutlined/>
-                    </ListItemIcon>
-                    <ListItemText primary={'Log out'} />
-                </ListItemButton>
+                        onClick={ logout }
+                            >
+                            <ListItemIcon>
+                                <LoginOutlined/>
+                            </ListItemIcon>
+                        <ListItemText primary={'Log out'} />
+                    </ListItemButton>
                 }
 
 
