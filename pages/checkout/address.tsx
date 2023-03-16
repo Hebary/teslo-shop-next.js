@@ -68,10 +68,13 @@ const Address: NextPage<Props> = ({}) => {
 
 // You should use getServerSideProps when:
 // - Only if you need to pre-render a page whose data must be fetched at request time
-// - For Next versions 12 or lowest, in Next 13 you can use Middleware
+// - The only way in Next.js versions 12 or below: Server processing the same content 
+// over and over again but that won't change for long and if it does, it will be minimal.
 
 export const getServerSideProps: GetServerSideProps = async ({ req }) => {
+
     const { token='' } = req.cookies;
+    
     let isValidToken = false; 
 
     try {
