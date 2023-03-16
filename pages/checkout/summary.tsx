@@ -1,8 +1,9 @@
-import { NextPage } from 'next';
+import { GetServerSideProps, NextPage } from 'next';
 import NextLink from 'next/link';
 import { Typography, Grid, Card, CardContent, Divider, Box, Button, Link } from '@mui/material';
 import { ShopLayout } from '@/components/layouts';
 import { CartList, OrderSummary } from '@/components/cart';
+import { utils } from '@/utils';
 
 
 
@@ -68,5 +69,35 @@ const SummaryPage: NextPage<Props> = ({}) => {
         </ShopLayout>
     )
 }
+
+export const getServerSideProps: GetServerSideProps = async ({ req }) => {
+
+    const { token='' } = req.cookies;
+    
+    let isValidToken = false; 
+
+    try {
+        await utils.isValidToken(token);
+        isValidToken = true;
+    } catch (error) {
+        isValidToken = false;
+    }
+
+    if( !isValidToken ) {
+        return{
+            redirect: {
+                destination: '/auth/login?p=/checkout/summary',
+                permanent: false
+            }
+        }
+    }
+    return {
+        props: {
+            
+        }
+    }
+}
+
+
 
 export default SummaryPage;
