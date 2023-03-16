@@ -1,6 +1,7 @@
-import { NextPage } from "next"
+import { NextPage, GetServerSideProps } from "next"
 import { ShopLayout } from "@/components/layouts"
 import { Box, Button, FormControl, Grid, InputLabel, MenuItem, Select, TextField, Typography } from '@mui/material';
+import { utils } from "@/utils";
 
 
 interface Props {
@@ -64,6 +65,38 @@ const Address: NextPage<Props> = ({}) => {
         </ShopLayout>
     )
 }
+
+// You should use getServerSideProps when:
+// - Only if you need to pre-render a page whose data must be fetched at request time
+// - For Next versions 12 or lowest, in Next 13 you can use Middleware
+
+export const getServerSideProps: GetServerSideProps = async ({ req }) => {
+    const { token='' } = req.cookies;
+    let isValidToken = false; 
+
+    try {
+        await utils.isValidToken(token);
+        isValidToken = true;
+    } catch (error) {
+        isValidToken = false;
+    }
+
+    if( !isValidToken ) {
+        return{
+            redirect: {
+                destination: '/auth/login?p=/checkout/address',
+                permanent: false
+            }
+        }
+    }
+    return {
+        props: {
+            
+        }
+    }
+}
+
+
 
 export default Address
 

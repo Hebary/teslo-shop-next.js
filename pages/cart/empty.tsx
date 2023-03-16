@@ -15,7 +15,7 @@ export const EmptyCart: React.FC = () => {
       >
         <RemoveShoppingCartOutlined sx={{ fontSize: 80 }} />
         <Box display="flex" flexDirection={"column"} alignItems="center">
-          <Typography variant="h4">Your cart is empty</Typography>
+          <Typography variant="h4" sx={{ mt:3, ml:2 }}>Your cart is empty</Typography>
           <NextLink href="/" passHref legacyBehavior>
             <Link typography={"h4"} color="secondary">
               Return

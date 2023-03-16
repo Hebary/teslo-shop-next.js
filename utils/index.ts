@@ -29,6 +29,9 @@ export const utils = {
 
     isValidToken: async (token: string): Promise<string> => {
         if( ! process.env.JWT_SECRET ) throw new Error('JWT_SECRET not found');
+        
+        if(token.length <= 10) return Promise.reject('Invalid JWT token');
+        
         return new Promise((resolve, reject) => {
             try {
                 jwt.verify(token, process.env.JWT_SECRET || '', (err, payload) => {
