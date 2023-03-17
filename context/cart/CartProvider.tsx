@@ -2,10 +2,23 @@ import { ICartProduct, ISize } from '@/interfaces';
 import { useEffect, useReducer } from 'react';
 import { CartContext, cartReducer } from './';
 import Cookie from 'js-cookie'
+import Cookies from 'js-cookie';
 
 interface Props {
    children: JSX.Element | JSX.Element[];
 }
+
+export interface ShippingAddress {
+    name     : string
+    lastname : string
+    address  : string
+    address2 : string
+    phone    : string
+    zip      : string
+    city     : string
+    country  : string
+}
+
 
 export interface CartState {
     cart: ICartProduct[],
@@ -14,7 +27,9 @@ export interface CartState {
     tax: number,
     total: number
     isLoaded:boolean
+    shippingAddress?: ShippingAddress
 }
+
 
 const CART_INITIAL_STATE: CartState = {
     cart: [],
@@ -22,7 +37,9 @@ const CART_INITIAL_STATE: CartState = {
     subtotal :0,
     tax: 0,
     total: 0,
-    isLoaded: false
+    isLoaded: false,
+
+    shippingAddress: undefined
 
 }
 
@@ -32,9 +49,8 @@ export const CartProvider: React.FC<Props> = ({children}) => {
 
     useEffect(() => {
         try {
-            const cart = Cookie.get('cart') ? JSON.parse(Cookie.get('cart')!) : [] ;
+            const cart = Cookie.get('cart') ? JSON.parse( Cookie.get('cart')! ) : [] ;
             dispatch({ type:'[CART]-LOAD_FROM_COOKIES', payload: cart })
-            
         } catch (error) {
             dispatch({ type:'[CART]-LOAD_FROM_COOKIES', payload: [] })
         }    
@@ -42,8 +58,27 @@ export const CartProvider: React.FC<Props> = ({children}) => {
     
 
     useEffect(() => {
-        Cookie.set('cart', JSON.stringify(state.cart));
+            Cookie.set('cart', JSON.stringify(state.cart));
     }, [state.cart])
+
+    useEffect(() => {
+
+        if(Cookies.get('name')) {
+
+            const shippingAddress = {
+                name    : Cookies.get('name')     || '',
+                lastname: Cookies.get('lastname') || '',
+                address : Cookies.get('address')  || '',
+                address2: Cookies.get('address2') || '',
+                phone   : Cookies.get('phone')    || '',
+                zip     : Cookies.get('zip')      || '',
+                city    : Cookies.get('city')     || '',
+                country : Cookies.get('country')  || ''
+            }
+            
+            dispatch({ type:'[CART]-LOAD_SHIPPING_ADDRESS', payload: shippingAddress})
+        }
+    }, [])
 
     useEffect(() => {
 

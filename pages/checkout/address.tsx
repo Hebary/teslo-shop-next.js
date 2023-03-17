@@ -19,21 +19,25 @@ type FormData = {
     country  : string; 
 }
 
+const getAddressFromCookies = (): FormData => {
+    return {
+        name     :  Cookies.get('name') || '',
+        lastname :  Cookies.get('lastname') || '',
+        address  :  Cookies.get('address') || '',
+        address2 :  Cookies.get('address2') || '',
+        phone    :  Cookies.get('phone') || '',
+        zip      :  Cookies.get('zip') || '',
+        city     :  Cookies.get('city') || '',
+        country  :  Cookies.get('country') || ''
+    }
+}
+
 const Address: NextPage = () => {
     
     const router = useRouter();
 
     const { register, handleSubmit, formState: { errors } } = useForm<FormData>({
-        defaultValues: {
-            name: '',
-            lastname: '',
-            address: '',
-            address2: '',
-            phone: '',
-            zip: '',
-            city: '',
-            country: countries[0].code
-        }
+        defaultValues: getAddressFromCookies()
     });
     
     const onAddressSubmit = async (data: FormData) => {

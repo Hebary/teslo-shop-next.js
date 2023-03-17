@@ -111,7 +111,7 @@ const ProductPage: NextPage<Props> = ({ product }) => {
                     }
                     <Box sx={{ my:2 }}>
                         <Typography variant='subtitle2' sx={{ mb: 1.5 }} component='h2'>Description</Typography>
-                        <Typography variant='body2' component='h2'>{ product.description }</Typography>
+                        <Typography variant='body2' sx={{ ml: 0.5 }} component='h2'>{ product.description }</Typography>
                     </Box>
                 </Grid>
             </Grid>
