@@ -4,15 +4,17 @@ import { Typography, Grid, Card, CardContent, Divider, Box, Button, Link } from 
 import { ShopLayout } from '@/components/layouts';
 import { CartList, OrderSummary } from '@/components/cart';
 import { utils } from '@/utils';
+import { useContext } from 'react';
+import { CartContext } from '@/context';
+import { countries } from '@/utils/countries';
 
 
+const SummaryPage: NextPage = () => {
+    
+    const { shippingAddress, numberOfItems } = useContext(CartContext)
+    
+    const { name, lastname, phone, address2 = '', address, city, zip, country } = shippingAddress!;
 
-
-
-interface Props {
-}
-
-const SummaryPage: NextPage<Props> = ({}) => {
     return (
         <ShopLayout title={'Summary'} pageDescription='Client Summary Order'>
             <Typography variant='h1' component='h1'  sx={{ mb:1.5 }}>Order Summary</Typography>
@@ -23,7 +25,7 @@ const SummaryPage: NextPage<Props> = ({}) => {
                 <Grid item xs={ 12 } sm={ 5 }>
                     <Card className='summary-card'>
                         <CardContent>
-                            <Typography variant='h2' component='h2'>Order</Typography>
+                            <Typography variant='h2' component='h2'>Order Resume ({numberOfItems} { numberOfItems===1 ? 'Item' : 'Items'})</Typography>
                             <Divider sx={{ my: 1 }}/>
                             <Box display={'flex'} justifyContent='space-between' alignItems='center'>
                             <Typography variant='subtitle1'>Shipping Address</Typography>
@@ -35,15 +37,19 @@ const SummaryPage: NextPage<Props> = ({}) => {
                             </Box>
 
                             <Typography variant='body1'>
-                                Bernardo D&apos;Addario
+                                { name } { lastname }
                             </Typography>
                             
                             <Typography variant='body1'>
-                                 1234 Main St, New York, NY 10001
+                                 {address} {', '+ address2 ? address2 : ''} 
                             </Typography>
                             
                             <Typography variant='body1'>
-                                +54 3 546 650 023
+                                {zip} {city} {countries.filter(c=>c.code===country)[0].name}
+                            </Typography>
+                            
+                            <Typography variant='body1'>
+                                { phone }
                             </Typography>
                             
                             <Divider sx={{ my: 1 }}/>

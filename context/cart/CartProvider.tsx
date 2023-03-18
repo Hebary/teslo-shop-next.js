@@ -90,7 +90,7 @@ export const CartProvider: React.FC<Props> = ({children}) => {
             numberOfItems,
             subtotal,
             tax: subtotal * taxRate,
-            total: subtotal + subtotal * (taxRate + 1)
+            total: subtotal * (taxRate + 1)
         }
         dispatch({type:'[CART]-UPDATE_ORDER_SUMMARY', payload: orderSummary })
     }, [state.cart])
@@ -122,6 +122,19 @@ export const CartProvider: React.FC<Props> = ({children}) => {
     const removeProductFromCart = (product: ICartProduct) => {
         dispatch({type:'[CART]-REMOVE_PRODUCT_FROM_CART', payload: product });
     }
+
+    const updateAddress = (address: ShippingAddress) => {
+        Cookies.set('name', address.name);
+        Cookies.set('lastname', address.lastname);
+        Cookies.set('address', address.address);
+        Cookies.set('address2', address?.address2 || '');
+        Cookies.set('phone', address.phone);
+        Cookies.set('zip', address.zip);
+        Cookies.set('city', address.city);
+        Cookies.set('country', address.country);
+        dispatch({type:'[CART]-UPDATE_SHIPPING_ADDRESS', payload: address });
+    }
+
    return (
     <CartContext.Provider
         value={{
@@ -129,6 +142,7 @@ export const CartProvider: React.FC<Props> = ({children}) => {
                 addProductToCart,
                 updateCartProduct,
                 removeProductFromCart,
+                updateAddress,
             }}>
         {children}
     </CartContext.Provider>

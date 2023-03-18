@@ -1,3 +1,4 @@
+import { useContext } from "react";
 import { NextPage, GetServerSideProps } from "next"
 import { useRouter } from 'next/router'
 import { useForm } from "react-hook-form";
@@ -6,6 +7,7 @@ import Cookies from "js-cookie";
 import { ShopLayout } from "@/components/layouts"
 import { countries } from "@/utils/countries";
 import { utils } from "@/utils";
+import { CartContext, ShippingAddress } from "@/context";
 
 
 type FormData = {
@@ -34,6 +36,8 @@ const getAddressFromCookies = (): FormData => {
 
 const Address: NextPage = () => {
     
+    const { updateAddress } = useContext(CartContext);
+
     const router = useRouter();
 
     const { register, handleSubmit, formState: { errors } } = useForm<FormData>({
@@ -41,15 +45,7 @@ const Address: NextPage = () => {
     });
     
     const onAddressSubmit = async (data: FormData) => {
-        Cookies.set('name', data.name);
-        Cookies.set('lastname', data.lastname);
-        Cookies.set('address', data.address);
-        Cookies.set('address2', data?.address2 || '');
-        Cookies.set('phone', data.phone);
-        Cookies.set('zip', data.zip);
-        Cookies.set('city', data.city);
-        Cookies.set('country', data.country);
-        
+        updateAddress(data as ShippingAddress);
         router.push('/checkout/summary')
     }
 
@@ -129,7 +125,7 @@ const Address: NextPage = () => {
                                     select
                                     variant='filled'
                                     label='country'
-                                    defaultValue={ countries[0].code }
+                                    defaultValue={ Cookies.get('country') || countries[0].code }
                                     {...register('country', { required: 'Country is required' })}
                                     error={!!errors.country}
                                     helperText={errors?.country?.message}
