@@ -54,8 +54,9 @@ const RegisterPage: NextPage = () => {
                     <Grid container spacing={ 3 }>
                         
                         <Grid item xs={ 12 }>
-                            <Typography variant='h1' component='h1' fontWeight={400} sx={{ml:1}}>Create account</Typography>
-                        
+                        <Typography variant='h4'  className='red-hat-font' component='h1' fontWeight={ 500 } sx={{ ml:1, letterSpacing:2 }}>Create Account</Typography>
+
+
                             <Chip
                                 label='We already have an account with that email'
                                 color='error'

@@ -1,16 +1,16 @@
-import { useContext, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { NextPage, GetServerSideProps } from 'next';
 import NextLink from 'next/link';
-import { getSession, signIn } from 'next-auth/react';
+import { getSession, signIn, getProviders, LiteralUnion, ClientSafeProvider } from 'next-auth/react';
 import { useRouter } from 'next/router'
 
 import { useForm } from 'react-hook-form';
-import { Box, Button, Chip, Grid, Link, TextField, Typography } from '@mui/material';
+import { Box, Button, Chip, Divider, Grid, Link, TextField, Typography } from '@mui/material';
 import { ErrorOutline } from '@mui/icons-material';
 
 import { AuthLayout } from '@/components/layouts';
 import { utils } from '@/utils';
-import { AuthContext } from '@/context';
+import { BuiltInProviderType } from 'next-auth/providers';
 
 
 type FormData = {
@@ -22,14 +22,21 @@ const Login: NextPage = () => {
     
     const { query } = useRouter()
 
-    const { loginUser } = useContext(AuthContext);
- 
     const { register, handleSubmit, formState: { errors } } = useForm<FormData>();
     
     const [error, setError] = useState(false);
+
+    const [providers, setProviders] = useState< Record< LiteralUnion< BuiltInProviderType, string >, ClientSafeProvider > | null > (null);
+
+    useEffect(() => {
+        getProviders().then( prov => {
+            setProviders(prov);
+        })
+        
+    }, [])
     
 
-    const onLogin = async ({ email, password }: FormData) => {
+    const onSignIn = async ({ email, password }: FormData) => {
         
         setError(false);
         await signIn('credentials',{email, password});
@@ -46,14 +53,14 @@ const Login: NextPage = () => {
     }
 
    return (
-        <AuthLayout title='Login page'>
+        <AuthLayout title='Sign In Page'>
 
-            <form onSubmit={ handleSubmit(onLogin) }>
+            <form onSubmit={ handleSubmit(onSignIn) }>
                 <Box  sx={{ width:'350px' }}>
                         <Grid container spacing={ 3 }>
 
                             <Grid item xs={ 12 }>
-                                <Typography variant='h1' component='h1' fontWeight={ 400 } sx={{ ml:1 }}>Login</Typography>
+                                <Typography variant='h4'  className='red-hat-font' component='h1' fontWeight={ 500 } sx={{ ml:1, letterSpacing:2 }}>Sign in</Typography>
                                 
                                 <Chip
                                     
@@ -113,6 +120,25 @@ const Login: NextPage = () => {
                                         </Typography>
                                     </Link>
                                 </NextLink>
+                            </Grid>
+
+                            <Grid item xs={ 12 } display='flex' flexDirection='column' justifyContent='end'>
+                                <Divider sx={{ width: '100%', mb: 3 }} />
+                                {
+                                    providers && Object.values(providers).map( ({id, name}) => {
+                                        if(id === 'credentials') return null;
+                                        return (
+                                            <Button
+                                                key={id}
+                                                variant='outlined'
+                                                sx={{mb: 1, ":hover":{backgroundColor: 'primary.main', color: 'white'}}}
+                                                fullWidth
+                                                color='primary'
+                                            >
+                                                {`Sign in with ${name}`}
+                                            </Button>
+                                    ) })
+                                }
                             </Grid>
 
                         </Grid>
