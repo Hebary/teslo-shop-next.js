@@ -1,10 +1,13 @@
 import { useContext, useState } from 'react';
-import { NextPage } from 'next';
+import { NextPage, GetServerSideProps } from 'next';
 import NextLink from 'next/link';
+import { getSession, signIn } from 'next-auth/react';
 import { useRouter } from 'next/router'
+
 import { useForm } from 'react-hook-form';
 import { Box, Button, Chip, Grid, Link, TextField, Typography } from '@mui/material';
 import { ErrorOutline } from '@mui/icons-material';
+
 import { AuthLayout } from '@/components/layouts';
 import { utils } from '@/utils';
 import { AuthContext } from '@/context';
@@ -17,7 +20,7 @@ type FormData = {
 
 const Login: NextPage = () => {
     
-    const { replace, query } = useRouter()
+    const { query } = useRouter()
 
     const { loginUser } = useContext(AuthContext);
  
@@ -29,17 +32,17 @@ const Login: NextPage = () => {
     const onLogin = async ({ email, password }: FormData) => {
         
         setError(false);
-        
-        const validLogin = await loginUser(email, password);
-        if (!validLogin) {
-            setError(true);
-            setTimeout(() => setError(false), 3000);
-            return;
-        }
+        await signIn('credentials',{email, password});
+        // const validLogin = await loginUser(email, password);
+        // if (!validLogin) {
+        //     setError(true);
+        //     setTimeout(() => setError(false), 3000);
+        //     return;
+        // }
 
-        // navigate to previous url 
-        const destination = query.p?.toString() || '/';
-        replace(destination);
+        // // navigate to previous url 
+        // const destination = query.p?.toString() || '/';
+        // replace(destination);
     }
 
    return (
@@ -117,6 +120,25 @@ const Login: NextPage = () => {
             </form>
         </AuthLayout>
     )
+}
+
+// You should use getServerSideProps when:
+// - Only if you need to pre-render a page whose data must be fetched at request time
+
+export const getServerSideProps: GetServerSideProps = async ({req, query}) => {
+    const session  = await getSession({ req }); 
+    const { p = '/' } = query;
+    if(session){
+        return {
+            redirect: {
+                destination: p.toString(),
+                permanent: false
+            }
+        }
+    }
+    return {
+        props: {}
+    }
 }
 
 export default Login;

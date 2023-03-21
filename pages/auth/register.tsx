@@ -1,11 +1,13 @@
 import { useState, useContext } from 'react';
+import { NextPage, GetServerSideProps } from 'next';
 import { useRouter } from 'next/router'
-import { NextPage } from 'next';
 import NextLink from 'next/link';
+import { getSession, signIn } from 'next-auth/react';
+
 import { ErrorOutline } from '@mui/icons-material';
 import { Box, Button, Chip, Grid, Link, TextField, Typography } from '@mui/material';
 import { useForm } from 'react-hook-form';
-import { tesloApi } from '@/api';
+
 import { AuthLayout } from '@/components/layouts';
 import { utils } from '@/utils';
 import { AuthContext } from '@/context';
@@ -40,8 +42,9 @@ const RegisterPage: NextPage = () => {
             setTimeout(() => setError(false), 3000);
             return;
         }
-        const destination = query.p?.toString() || '/';
-        replace(destination);
+        // const destination = query.p?.toString() || '/';
+        // replace(destination);
+        await signIn('credentials',{email, password});
     }
 
     return (
@@ -140,5 +143,25 @@ const RegisterPage: NextPage = () => {
         </AuthLayout>
     )
 }
+
+// You should use getServerSideProps when:
+// - Only if you need to pre-render a page whose data must be fetched at request time
+
+export const getServerSideProps: GetServerSideProps = async ({req, query}) => {
+    const session  = await getSession({ req }); 
+    const { p = '/' } = query;
+    if(session){
+        return {
+            redirect: {
+                destination: p.toString(),
+                permanent: false
+            }
+        }
+    }
+    return {
+        props: {}
+    }
+}
+
 
 export default RegisterPage;

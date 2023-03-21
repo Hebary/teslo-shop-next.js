@@ -23,6 +23,25 @@ export const authOptions = {
     }),  
 
   ],
+
+  //Custom pages to login
+  pages: {
+    signIn: '/auth/login',
+    newUser: '/auth/register',
+
+  },
+
+  jwt:{
+    
+  },
+  
+  session:{
+    maxAge: 60 * 60 * 24 * 30, // 30 days
+    strategy: 'jwt',
+    udpateAge: 24 * 60 * 60, // 24 hours
+  },
+
+
     callbacks : {
       async jwt({token, account, user} :{ token: any, account: any, user: any }) {
         // console.log({token, account, user})
