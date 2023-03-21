@@ -1,10 +1,10 @@
 import { useEffect, useReducer } from 'react';
-import { useRouter } from 'next/router'
 import axios from 'axios';
 import Cookies from 'js-cookie';
 import { AuthContext, authReducer } from './';
 import { IUser } from '@/interfaces/';
 import { tesloApi } from '@/api';
+import { useSession, signOut } from 'next-auth/react';
 
 
 interface Props {
@@ -24,12 +24,14 @@ const AUTH_INITIAL_STATE: AuthState = {
 export const AuthProvider: React.FC<Props> = ({children}) => {
 
     const [state, dispatch] = useReducer(authReducer, AUTH_INITIAL_STATE);
-
-    const { reload } = useRouter();
+    const { data, status } = useSession();
 
     useEffect(() => {
-        checkToken();
-    }, [])
+        if(status === 'authenticated') {
+            console.log({user: data?.user})
+            dispatch({ type: '[AUTH]-LOG_IN', payload: data?.user as IUser })
+        }
+    }, [data, status])
 
     const checkToken = async () => {
 
@@ -102,7 +104,6 @@ export const AuthProvider: React.FC<Props> = ({children}) => {
 
     const logout = () => {
         Cookies.remove('cart');
-        Cookies.remove('token');
         Cookies.remove('name');
         Cookies.remove('lastname');
         Cookies.remove('address');
@@ -111,7 +112,7 @@ export const AuthProvider: React.FC<Props> = ({children}) => {
         Cookies.remove('zip');
         Cookies.remove('city');
         Cookies.remove('country');
-        reload();        
+        signOut();
     }
 
     return (
