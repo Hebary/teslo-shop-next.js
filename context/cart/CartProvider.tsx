@@ -1,8 +1,7 @@
-import { ICartProduct, ISize } from '@/interfaces';
+import { ICartProduct } from '@/interfaces';
 import { useEffect, useReducer } from 'react';
 import { CartContext, cartReducer } from './';
-import Cookie from 'js-cookie'
-import Cookies from 'js-cookie';
+import Cookie from 'js-cookie';
 
 interface Props {
    children: JSX.Element | JSX.Element[];
@@ -21,23 +20,23 @@ export interface ShippingAddress {
 
 
 export interface CartState {
-    cart: ICartProduct[],
-    numberOfItems: number,
-    subtotal: number,
-    tax: number,
-    total: number
-    isLoaded:boolean
+    cart            : ICartProduct[],
+    numberOfItems   : number,
+    subtotal        : number,
+    tax             : number,
+    total           : number
+    isLoaded        :boolean
     shippingAddress?: ShippingAddress
 }
 
 
 const CART_INITIAL_STATE: CartState = {
+    isLoaded: false,
     cart: [],
     numberOfItems: 0,
     subtotal :0,
     tax: 0,
     total: 0,
-    isLoaded: false,
 
     shippingAddress: undefined
 
@@ -49,7 +48,7 @@ export const CartProvider: React.FC<Props> = ({children}) => {
 
     useEffect(() => {
         try {
-            const cart = Cookie.get('cart') ? JSON.parse( Cookie.get('cart')! ) : [] ;
+            const cart = Cookie.get('cart') ? JSON.parse( Cookie.get('cart')! ) : [];
             dispatch({ type:'[CART]-LOAD_FROM_COOKIES', payload: cart })
         } catch (error) {
             dispatch({ type:'[CART]-LOAD_FROM_COOKIES', payload: [] })
@@ -58,27 +57,11 @@ export const CartProvider: React.FC<Props> = ({children}) => {
     
 
     useEffect(() => {
+        if(state.cart.length>0){
+            //this line makes the reload of navigator keeps items on cart
             Cookie.set('cart', JSON.stringify(state.cart));
-    }, [state.cart])
-
-    useEffect(() => {
-
-        if(Cookies.get('name')) {
-
-            const shippingAddress = {
-                name    : Cookies.get('name')     || '',
-                lastname: Cookies.get('lastname') || '',
-                address : Cookies.get('address')  || '',
-                address2: Cookies.get('address2') || '',
-                phone   : Cookies.get('phone')    || '',
-                zip     : Cookies.get('zip')      || '',
-                city    : Cookies.get('city')     || '',
-                country : Cookies.get('country')  || ''
-            }
-            
-            dispatch({ type:'[CART]-LOAD_SHIPPING_ADDRESS', payload: shippingAddress})
         }
-    }, [])
+    }, [state.cart])
 
     useEffect(() => {
 
@@ -95,6 +78,26 @@ export const CartProvider: React.FC<Props> = ({children}) => {
         dispatch({type:'[CART]-UPDATE_ORDER_SUMMARY', payload: orderSummary })
     }, [state.cart])
     
+    
+    useEffect(() => {
+
+        if(Cookie.get('name')) {
+
+            const shippingAddress = {
+                name    : Cookie.get('name')     || '',
+                lastname: Cookie.get('lastname') || '',
+                address : Cookie.get('address')  || '',
+                address2: Cookie.get('address2') || '',
+                phone   : Cookie.get('phone')    || '',
+                zip     : Cookie.get('zip')      || '',
+                city    : Cookie.get('city')     || '',
+                country : Cookie.get('country')  || ''
+            }
+            
+            dispatch({ type:'[CART]-LOAD_SHIPPING_ADDRESS', payload: shippingAddress})
+        }
+    }, [])
+
 
     const addProductToCart = (product: ICartProduct) => {
 
@@ -124,14 +127,14 @@ export const CartProvider: React.FC<Props> = ({children}) => {
     }
 
     const updateAddress = (address: ShippingAddress) => {
-        Cookies.set('name', address.name);
-        Cookies.set('lastname', address.lastname);
-        Cookies.set('address', address.address);
-        Cookies.set('address2', address?.address2 || '');
-        Cookies.set('phone', address.phone);
-        Cookies.set('zip', address.zip);
-        Cookies.set('city', address.city);
-        Cookies.set('country', address.country);
+        Cookie.set('name', address.name);
+        Cookie.set('lastname', address.lastname);
+        Cookie.set('address', address.address);
+        Cookie.set('address2', address?.address2 || '');
+        Cookie.set('phone', address.phone);
+        Cookie.set('zip', address.zip);
+        Cookie.set('city', address.city);
+        Cookie.set('country', address.country);
         dispatch({type:'[CART]-UPDATE_SHIPPING_ADDRESS', payload: address });
     }
 

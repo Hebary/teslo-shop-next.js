@@ -1,12 +1,13 @@
 import { useContext } from "react";
-import { NextPage, GetServerSideProps } from "next"
+import { NextPage } from "next"
 import { useRouter } from 'next/router'
+
 import { useForm } from "react-hook-form";
 import { Box, Button, FormControl, Grid, MenuItem, Select, TextField, Typography } from '@mui/material';
 import Cookies from "js-cookie";
+
 import { ShopLayout } from "@/components/layouts"
 import { countries } from "@/utils/countries";
-import { utils } from "@/utils";
 import { CartContext, ShippingAddress } from "@/context";
 
 

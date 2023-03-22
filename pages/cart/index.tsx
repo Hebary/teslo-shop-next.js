@@ -11,6 +11,7 @@ import { CartList, OrderSummary } from '@/components/cart';
 const Cart: NextPage = () => {
    
     const { isLoaded, cart } = useContext(CartContext)
+
     const router = useRouter();
 
     useEffect(() => {

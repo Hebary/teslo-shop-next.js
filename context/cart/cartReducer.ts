@@ -4,18 +4,18 @@ import { ShippingAddress } from './';
 
 
 type CartActionType = 
-| { type: '[CART]-LOAD_FROM_COOKIES', payload: ICartProduct[] }
-| { type: '[CART]-UPDATE_CART_PRODUCTS', payload: ICartProduct[] }
-| { type: '[CART]-UPDATE_PRODUCT_IN_CART', payload: ICartProduct }
+| { type: '[CART]-LOAD_FROM_COOKIES',        payload: ICartProduct[] }
+| { type: '[CART]-UPDATE_CART_PRODUCTS',     payload: ICartProduct[] }
+| { type: '[CART]-UPDATE_PRODUCT_IN_CART',   payload: ICartProduct }
 | { type: '[CART]-REMOVE_PRODUCT_FROM_CART', payload: ICartProduct }
-| { type: '[CART]-LOAD_SHIPPING_ADDRESS', payload: ShippingAddress }
-| { type: '[CART]-UPDATE_SHIPPING_ADDRESS', payload: ShippingAddress }
+| { type: '[CART]-LOAD_SHIPPING_ADDRESS',    payload: ShippingAddress }
+| { type: '[CART]-UPDATE_SHIPPING_ADDRESS',  payload: ShippingAddress }
 | { type: '[CART]-UPDATE_ORDER_SUMMARY', 
     payload: {
-      numberOfItems:number,
-      subtotal     : number,
-      tax          : number
-      total        :number
+      numberOfItems: number;
+      subtotal     : number;
+      tax          : number;
+      total        : number;
     }
   }
 

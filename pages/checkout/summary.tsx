@@ -1,17 +1,29 @@
-import { GetServerSideProps, NextPage } from 'next';
+import { useContext, useEffect } from 'react';
+import { NextPage } from 'next';
 import NextLink from 'next/link';
+import { useRouter } from 'next/router';
+
+import Cookies from 'js-cookie';
+
 import { Typography, Grid, Card, CardContent, Divider, Box, Button, Link } from '@mui/material';
 import { ShopLayout } from '@/components/layouts';
 import { CartList, OrderSummary } from '@/components/cart';
-import { utils } from '@/utils';
-import { useContext } from 'react';
 import { CartContext } from '@/context';
 import { countries } from '@/utils/countries';
 
 
 const SummaryPage: NextPage = () => {
-    
+    const router = useRouter();
     const { shippingAddress, numberOfItems } = useContext(CartContext)
+    
+    useEffect(() => {
+        if( !Cookies.get('name')){
+            router.push('/checkout/address')
+        }  
+    
+    }, [router])
+    
+    if(!shippingAddress) return <></>;
     
     const { name, lastname, phone, address2 = '', address, city, zip, country } = shippingAddress!;
 

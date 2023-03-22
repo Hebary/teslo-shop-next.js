@@ -16,7 +16,7 @@ interface Props {
 
 export const CartList: React.FC<Props> = ({ editable = false }) => {
     
-        const { cart: productsInCart, updateCartProduct, removeProductFromCart } = useContext(CartContext);
+        const { cart, updateCartProduct, removeProductFromCart } = useContext(CartContext);
 
         const onUpdatedQuantity = (product: ICartProduct, quantity: number) => {
             product.quantity = quantity;
@@ -27,7 +27,7 @@ export const CartList: React.FC<Props> = ({ editable = false }) => {
     return (
         <Box sx={{ mt:2 }}> 
             {
-                productsInCart.map(product => (
+                cart.map(product => (
                     <Grid container spacing={ 2 } sx={{mb:1}} key={ product.slug + product.size }>
                         <Grid item xs={ 3 }>
                             <NextLink href={`/product/${ product.slug }`} passHref > 
