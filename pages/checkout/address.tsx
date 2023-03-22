@@ -24,14 +24,14 @@ type FormData = {
 
 const getAddressFromCookies = (): FormData => {
     return {
-        name     :  Cookies.get('name') || '',
+        name     :  Cookies.get('name')     || '',
         lastname :  Cookies.get('lastname') || '',
-        address  :  Cookies.get('address') || '',
+        address  :  Cookies.get('address')  || '',
         address2 :  Cookies.get('address2') || '',
-        phone    :  Cookies.get('phone') || '',
-        zip      :  Cookies.get('zip') || '',
-        city     :  Cookies.get('city') || '',
-        country  :  Cookies.get('country') || ''
+        phone    :  Cookies.get('phone')    || '',
+        zip      :  Cookies.get('zip')      || '',
+        city     :  Cookies.get('city')     || '',
+        country  :  Cookies.get('country')  || ''
     }
 }
 
@@ -126,7 +126,7 @@ const Address: NextPage = () => {
                                     select
                                     variant='filled'
                                     label='country'
-                                    defaultValue={ Cookies.get('country') || countries[0].code }
+                                    defaultValue={ countries[0].code }
                                     {...register('country', { required: 'Country is required' })}
                                     error={!!errors.country}
                                     helperText={errors?.country?.message}
