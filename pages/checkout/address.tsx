@@ -165,34 +165,36 @@ const Address: NextPage = () => {
 // - Only if you need to pre-render a page whose data must be fetched at request time
 // - The only way in Next.js versions 12 or below: Server processing the same content 
 // over and over again but that won't change for long and if it does, it will be minimal.
+// thats why i m using middleware.ts in the root
 
-export const getServerSideProps: GetServerSideProps = async ({ req }) => {
 
-    const { token='' } = req.cookies;
+// export const getServerSideProps: GetServerSideProps = async ({ req }) => {
+
+//     const { token='' } = req.cookies;
     
-    let isValidToken = false; 
+//     let isValidToken = false; 
 
-    try {
-        await utils.isValidToken(token);
-        isValidToken = true;
-    } catch (error) {
-        isValidToken = false;
-    }
+//     try {
+//         await utils.isValidToken(token);
+//         isValidToken = true;
+//     } catch (error) {
+//         isValidToken = false;
+//     }
 
-    if( !isValidToken ) {
-        return{
-            redirect: {
-                destination: '/auth/login?p=/checkout/address',
-                permanent: false
-            }
-        }
-    }
-    return {
-        props: {
+//     if( !isValidToken ) {
+//         return{
+//             redirect: {
+//                 destination: '/auth/login?p=/checkout/address',
+//                 permanent: false
+//             }
+//         }
+//     }
+//     return {
+//         props: {
             
-        }
-    }
-}
+//         }
+//     }
+// }
 
 
 

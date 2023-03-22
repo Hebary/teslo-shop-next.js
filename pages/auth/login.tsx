@@ -134,6 +134,7 @@ const Login: NextPage = () => {
                                                 sx={{mb: 1, ":hover":{backgroundColor: 'primary.main', color: 'white'}}}
                                                 fullWidth
                                                 color='primary'
+                                                onClick={ ()=> signIn(id) } 
                                             >
                                                 {`Sign in with ${name}`}
                                             </Button>
