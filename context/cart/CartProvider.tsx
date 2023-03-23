@@ -1,4 +1,4 @@
-import { ICartProduct } from '@/interfaces';
+import { ICartProduct, ShippingAddress } from '@/interfaces';
 import { useEffect, useReducer } from 'react';
 import { CartContext, cartReducer } from './';
 import Cookies from 'js-cookie';
@@ -7,16 +7,7 @@ interface Props {
    children: JSX.Element | JSX.Element[];
 }
 
-export interface ShippingAddress {
-    name     : string
-    lastname : string
-    address  : string
-    address2 : string
-    phone    : string
-    zip      : string
-    city     : string
-    country  : string
-}
+
 
 
 export interface CartState {
@@ -25,7 +16,7 @@ export interface CartState {
     subtotal        : number,
     tax             : number,
     total           : number
-    isLoaded        :boolean
+    isLoaded        : boolean
     shippingAddress?: ShippingAddress
 }
 
