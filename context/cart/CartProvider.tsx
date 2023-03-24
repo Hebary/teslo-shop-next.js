@@ -1,4 +1,4 @@
-import { ICartProduct, ShippingAddress } from '@/interfaces';
+import { ICartProduct, IOrder, ShippingAddress } from '@/interfaces';
 import { useEffect, useReducer } from 'react';
 import { CartContext, cartReducer } from './';
 import Cookies from 'js-cookie';
@@ -120,8 +120,25 @@ export const CartProvider: React.FC<Props> = ({children}) => {
     }
 
     const createOrder = async () => {
+        
+        if(!state.shippingAddress) throw new Error('Shipping address is required');
+
+
+        const body:IOrder = {
+            orderItems: state.cart.map(p => ({
+                ...p,
+                size: p.size!,
+            })),
+            shippingAddress: state.shippingAddress,
+            numberOfItems  : state.numberOfItems,
+            subtotal       : state.subtotal,
+            tax            : state.tax,
+            total          : state.total,
+            isPaid         : false,
+        }
+        
         try {
-            const { data } = await tesloApi.post('/orders', {})
+            const { data } = await tesloApi.post('/orders', body);
             console.log({data});
 
         } catch (error) {
