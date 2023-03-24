@@ -1,20 +1,17 @@
 import { IUser } from './';
 
 export interface IOrder {
-    _id?  : string;
-    user? : IUser | string;
-    items : OrderItem[];
+    _id?           : string;
+    user?          : IUser | string;
+    items          : OrderItem[];
     shippingAddress: ShippingAddress
     paymentMethod? : string
-
     numberOfItems? : number
     subtotal       : number;
     tax            : number;
     total          : number;
-
     isPaid?        : boolean;
     paidAt?        : string;
-
 }
 
 export interface OrderItem {

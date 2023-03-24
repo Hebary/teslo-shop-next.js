@@ -1,6 +1,6 @@
 import { CartState } from './';
 import { ICartProduct } from '@/interfaces';
-import { ShippingAddress } from './';
+import { ShippingAddress } from '../../interfaces';
 
 
 type CartActionType = 

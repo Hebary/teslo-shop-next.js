@@ -14,7 +14,7 @@ import { countries } from '@/utils/countries';
 
 const SummaryPage: NextPage = () => {
     const router = useRouter();
-    const { shippingAddress, numberOfItems } = useContext(CartContext)
+    const { shippingAddress, numberOfItems, createOrder } = useContext(CartContext)
     
     useEffect(() => {
         if( !Cookies.get('name')){
@@ -26,6 +26,10 @@ const SummaryPage: NextPage = () => {
     if(!shippingAddress) return <></>;
     
     const { name, lastname, phone, address2 = '', address, city, zip, country } = shippingAddress!;
+
+    const onCreateOrder = async () => {
+        createOrder();
+    }
 
     return (
         <ShopLayout title={'Summary'} pageDescription='Client Summary Order'>
@@ -76,7 +80,12 @@ const SummaryPage: NextPage = () => {
 
                             <OrderSummary/>
                             <Box sx={{ mt: 3 }}>
-                                <Button color='secondary' className='circular-btn' fullWidth>
+                                <Button 
+                                    color='secondary' 
+                                    className='circular-btn' 
+                                    fullWidth
+                                    onClick={ onCreateOrder }
+                                    >
                                     Confirm order
                                 </Button>
                             </Box>

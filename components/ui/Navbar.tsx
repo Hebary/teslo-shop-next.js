@@ -25,7 +25,6 @@ export const Navbar: React.FC<Props> = ({}) => {
     }
 
     return (
-
         <AppBar>
             <Toolbar  color='black'>
                 <NextLink href='/' passHref legacyBehavior>

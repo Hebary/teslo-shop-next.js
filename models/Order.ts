@@ -14,6 +14,7 @@ const orderSchema: Schema = new Schema({
         slug    : { type: String, required: true },
         image   : { type: String, required: true },
     }],
+    
     shippingAddress: {
         name    : { type: String, required: true },
         lastname: { type: String, required: true },

@@ -2,13 +2,11 @@ import { ICartProduct, ShippingAddress } from '@/interfaces';
 import { useEffect, useReducer } from 'react';
 import { CartContext, cartReducer } from './';
 import Cookies from 'js-cookie';
+import { tesloApi } from '@/api';
 
 interface Props {
    children: JSX.Element | JSX.Element[];
 }
-
-
-
 
 export interface CartState {
     cart            : ICartProduct[],
@@ -20,7 +18,6 @@ export interface CartState {
     shippingAddress?: ShippingAddress
 }
 
-
 const CART_INITIAL_STATE: CartState = {
     isLoaded: false,
     cart: [],
@@ -28,9 +25,7 @@ const CART_INITIAL_STATE: CartState = {
     subtotal :0,
     tax: 0,
     total: 0,
-
     shippingAddress: undefined
-
 }
 
 export const CartProvider: React.FC<Props> = ({children}) => {
@@ -55,11 +50,9 @@ export const CartProvider: React.FC<Props> = ({children}) => {
     }, [state.cart])
 
     useEffect(() => {
-
         const numberOfItems = state.cart.reduce((prev, curr) => prev + curr.quantity, 0)
         const subtotal = state.cart.reduce((prev, curr) => prev + ( curr.price * curr.quantity ), 0)
         const taxRate = Number(process.env.NEXT_PUBLIC_TAXRATE || 0)
-        
         const orderSummary = {
             numberOfItems,
             subtotal,
@@ -71,9 +64,7 @@ export const CartProvider: React.FC<Props> = ({children}) => {
     
     
     useEffect(() => {
-
         if(Cookies.get('name')) {
-
             const shippingAddress = {
                 name    : Cookies.get('name')     || '',
                 lastname: Cookies.get('lastname') || '',
@@ -84,7 +75,6 @@ export const CartProvider: React.FC<Props> = ({children}) => {
                 city    : Cookies.get('city')     || '',
                 country : Cookies.get('country')  || ''
             }
-            
             dispatch({ type:'[CART]-LOAD_SHIPPING_ADDRESS', payload: shippingAddress})
         }
     }, [])
@@ -129,6 +119,17 @@ export const CartProvider: React.FC<Props> = ({children}) => {
         dispatch({type:'[CART]-UPDATE_SHIPPING_ADDRESS', payload: address });
     }
 
+    const createOrder = async () => {
+        try {
+            const { data } = await tesloApi.post('/orders', {})
+            console.log({data});
+
+        } catch (error) {
+            console.log({error});
+        }
+    }
+
+
    return (
     <CartContext.Provider
         value={{
@@ -137,6 +138,7 @@ export const CartProvider: React.FC<Props> = ({children}) => {
                 updateCartProduct,
                 removeProductFromCart,
                 updateAddress,
+                createOrder
             }}>
         {children}
     </CartContext.Provider>

@@ -13,7 +13,7 @@ interface Props {
 
 export interface AuthState {
     isLogged: boolean;
-    user?: IUser
+    user   ?: IUser;
 }
 
 const AUTH_INITIAL_STATE: AuthState = {
@@ -28,29 +28,32 @@ export const AuthProvider: React.FC<Props> = ({children}) => {
 
     useEffect(() => {
         if(status === 'authenticated') {
-            console.log({user: data?.user})
             dispatch({ type: '[AUTH]-LOG_IN', payload: data?.user as IUser })
         }
     }, [data, status])
 
-    const checkToken = async () => {
+    // useEffect(() => {
+    //     checkToken();
+    // },[])
 
-        if( !Cookies.get('token') ) return;
+    // const checkToken = async () => {
 
-        try {
-            const { data } = await tesloApi.get('/user/validate-jwt');
-            const { user, token } = data;
+    //     if( !Cookies.get('token') ) return;
+
+    //     try {
+    //         const { data } = await tesloApi.get('/user/validate-jwt');
+    //         const { user, token } = data;
             
-            Cookies.set('token', token);
-                    dispatch({
-                        type: '[AUTH]-LOG_IN',
-                        payload: user
-                    })
+    //         Cookies.set('token', token);
+    //                 dispatch({
+    //                     type: '[AUTH]-LOG_IN',
+    //                     payload: user
+    //                 })
             
-        } catch (error) {
-            Cookies.remove('token');
-        }
-    }
+    //     } catch (error) {
+    //         Cookies.remove('token');
+    //     }
+    // }
 
     const loginUser = async ( email: string, password: string ): Promise<boolean>=> {
         
@@ -72,7 +75,7 @@ export const AuthProvider: React.FC<Props> = ({children}) => {
 
     }
 
-    const registerUser = async ( name:string, email: string, password: string ): Promise<{ hasError: boolean, message?:string }> => {
+    const registerUser = async ( name: string, email: string, password: string ): Promise<{ hasError: boolean, message?:string }> => {
             
             try {
                 const { data } = await tesloApi.post('/user/register', { name, email, password })    
