@@ -1,5 +1,4 @@
 import mongoose, { Model, model, Schema } from 'mongoose';
-import { type } from 'os';
 import { IOrder } from '../interfaces';
 
 const orderSchema: Schema = new Schema({
@@ -30,7 +29,7 @@ const orderSchema: Schema = new Schema({
     subtotal       : { type: Number, required: true },
     tax            : { type: Number, required: true },
     total          : { type: Number, required: true },
-    paymentMethod  : { type: String, required: true },
+    paymentMethod  : { type: String },
     isPaid         : { type: Boolean, required: true, default: false, },
     paidAt         : { type: String },
   
@@ -38,6 +37,6 @@ const orderSchema: Schema = new Schema({
     timestamps: true 
 });
 
-const Order: Model<IOrder> = mongoose.models.User || model<IOrder>('Order', orderSchema);
+const Order: Model<IOrder> = mongoose.models.Order || model<IOrder>('Order', orderSchema);
 
 export default Order;

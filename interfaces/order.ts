@@ -6,11 +6,11 @@ export interface IOrder {
     orderItems     : OrderItem[];
     shippingAddress: ShippingAddress
     paymentMethod? : string
-    numberOfItems? : number
+    numberOfItems  : number
     subtotal       : number;
     tax            : number;
     total          : number;
-    isPaid?        : boolean;
+    isPaid         : boolean;
     paidAt?        : string;
 }
 
@@ -19,9 +19,9 @@ export interface OrderItem {
     title   : string;
     size    : ISize;
     quantity: number;
-    price   : number;
     slug    : string;
     image   : string;
+    price   : number;
     gender  : string;
 }
 
