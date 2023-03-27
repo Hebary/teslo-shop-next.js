@@ -3,18 +3,19 @@ import NextLink from 'next/link';
 import { Box, Button, CardActionArea, CardMedia, Grid, Link, Typography } from "@mui/material";
 import { CartContext } from "@/context";
 import { ItemCounter } from "../ui";
-import { ICartProduct, ISize } from '@/interfaces';
+import { ICartProduct, IOrderItem } from '@/interfaces';
 
 
 
 
 interface Props {
     editable?: boolean;
+    products?: IOrderItem[]
 }
 
 
 
-export const CartList: React.FC<Props> = ({ editable = false }) => {
+export const CartList: React.FC<Props> = ({ editable = false, products=[] }) => {
     
         const { cart, updateCartProduct, removeProductFromCart } = useContext(CartContext);
 
@@ -23,11 +24,12 @@ export const CartList: React.FC<Props> = ({ editable = false }) => {
             updateCartProduct(product);
         }
 
+        const cartProducts = products.length > 0 ? products : cart;
     
     return (
         <Box sx={{ mt:2 }}> 
             {
-                cart.map(product => (
+                cartProducts.map(product => (
                     <Grid container spacing={ 2 } sx={{mb:1}} key={ product.slug + product.size }>
                         <Grid item xs={ 3 }>
                             <NextLink href={`/product/${ product.slug }`} passHref > 
@@ -52,7 +54,7 @@ export const CartList: React.FC<Props> = ({ editable = false }) => {
                                     ? <ItemCounter 
                                         currentValue={ product.quantity } 
                                         maxValue={ 10 } 
-                                        updatedQuantity={(newValue)=> onUpdatedQuantity(product, newValue) }
+                                        updatedQuantity={(newValue)=> onUpdatedQuantity(product as ICartProduct, newValue) }
                                      />
                                     : <Typography variant='body1'>Quantity: <strong>{ product.quantity }</strong></Typography>
                                 }
@@ -63,7 +65,7 @@ export const CartList: React.FC<Props> = ({ editable = false }) => {
                             { 
                                 editable &&
                                 <Button
-                                    onClick={ () => removeProductFromCart( product )  } 
+                                    onClick={ () => removeProductFromCart( product as ICartProduct )  } 
                                     variant='text' 
                                     color='secondary'
                                 >

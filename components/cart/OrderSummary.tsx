@@ -4,12 +4,22 @@ import { CartContext } from '@/context';
 import { utils } from '@/utils';
 
 
+interface Props {
 
+    orderValues? :{
+        numberOfItems: number ;
+        subtotal     : number ;
+        total        : number ;
+        tax          : number ;
+    }
+}
 
-export const OrderSummary: React.FC = () => {
+export const OrderSummary: React.FC<Props> = ({orderValues}) => {
 
     const { numberOfItems, subtotal, tax, total } = useContext(CartContext);
     
+    const summaryOrderValues = orderValues ? orderValues : { numberOfItems, subtotal, tax, total };
+
     return (
         <Grid container>
             <Grid item sx={{ mt:1 }} xs={ 6 } >
@@ -17,7 +27,7 @@ export const OrderSummary: React.FC = () => {
             </Grid>     
 
             <Grid item sx={{ mt:1 }} xs={ 6 } display='flex' justifyContent='end'>
-                <Typography>{ numberOfItems }{ numberOfItems > 1 ? ' items' : ' item' }</Typography>    
+                <Typography>{ summaryOrderValues.numberOfItems }{ summaryOrderValues.numberOfItems > 1 ? ' items' : ' item' }</Typography>    
             </Grid>                 
 
             <Grid item  xs={ 6 }>
@@ -25,7 +35,7 @@ export const OrderSummary: React.FC = () => {
             </Grid>                 
 
             <Grid item  xs={ 6 } display='flex' justifyContent='end'>
-                <Typography >{ utils.format(subtotal) }</Typography>    
+                <Typography >{ utils.format(summaryOrderValues.subtotal) }</Typography>    
             </Grid>             
 
             <Grid item  xs={ 6 }>
@@ -33,7 +43,7 @@ export const OrderSummary: React.FC = () => {
             </Grid>                 
 
             <Grid item  xs={ 6 } display='flex' justifyContent='end'>
-                <Typography >{ utils.format(tax) }</Typography>    
+                <Typography >{ utils.format(summaryOrderValues.tax) }</Typography>    
             </Grid>                 
 
             <Grid item sx={{ mt: 1 }}  xs={ 6 }>
@@ -41,7 +51,7 @@ export const OrderSummary: React.FC = () => {
             </Grid>                 
 
             <Grid item sx={{ mt:1 }} xs={ 6 } display='flex' justifyContent='end'>
-                <Typography variant='subtitle1' >{ utils.format(total) }</Typography>    
+                <Typography variant='subtitle1' >{ utils.format(summaryOrderValues.total) }</Typography>    
             </Grid>                 
 
         </Grid>

@@ -3,7 +3,7 @@ import { IUser, ISize } from './';
 export interface IOrder {
     _id?           : string;
     user?          : IUser | string;
-    orderItems     : OrderItem[];
+    orderItems     : IOrderItem[];
     shippingAddress: ShippingAddress
     paymentMethod? : string
     numberOfItems  : number
@@ -14,7 +14,7 @@ export interface IOrder {
     paidAt?        : string;
 }
 
-export interface OrderItem {
+export interface IOrderItem {
     _id     : string;
     title   : string;
     size    : ISize;

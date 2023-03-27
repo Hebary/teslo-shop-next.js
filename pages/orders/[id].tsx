@@ -1,16 +1,14 @@
 import { NextPage, GetServerSideProps } from 'next';
-import NextLink from 'next/link';
 import { Typography, Grid, Card, CardContent, Divider, Box, Link, Chip } from '@mui/material';
 import { getSession } from 'next-auth/react';
-import { CreditScoreOutlined } from '@mui/icons-material';
+import { CreditCardOutlined, CreditScoreOutlined } from '@mui/icons-material';
+
 import { ShopLayout } from '@/components/layouts';
 import { CartList, OrderSummary } from '@/components/cart';
+
 import { IOrder } from '@/interfaces';
-import { tesloApi } from '@/api';
 import { dbOrders } from '@/database';
-import { Order } from '@/models';
-
-
+import { countries } from '../../utils/countries';
 
 
 
@@ -18,80 +16,94 @@ interface Props {
     order: IOrder 
 }
 
-const OrderPage: NextPage<Props> = ({order}) => {
+const OrderPage: NextPage<Props> = ({ order }) => {
     
-    console.log(order)
+    const { _id, shippingAddress, numberOfItems, subtotal, tax, total } = order;
 
     return (
-        <ShopLayout title={'summary of order 1215231923'} pageDescription='summary client order'>
-            <Box display='flex' alignItems='center' sx={{ mb: 2 }} justifyContent='start' gap={2}>
+        <ShopLayout title={'summary of order '+_id} pageDescription='summary client order' >
+            <Box display='flex' alignItems='center' sx={{ mb: 4 }} justifyContent='start' gap={2}>
 
-                <Typography variant='h1' component='h1'>Order 1215231923</Typography>
+                <Typography variant='h1' component='h1' >Order {_id}</Typography>
 
-                {/* <Chip 
-                    variant='outlined' 
-                    label='Outstanding' 
-                    color='error' 
-                    icon={ <CreditCardOutlined/> }
-                /> */}
-                <Chip 
-                    variant='outlined' 
-                    label='Paid order' 
-                    color='success' 
-                    icon={ <CreditScoreOutlined/> }
-                />
+                { 
+                    !order.isPaid ? (
+                        <Chip 
+                            variant='outlined' 
+                            label='Outstanding' 
+                            color='error' 
+                            icon={ <CreditCardOutlined/> }
+                        /> 
+                    ) :
+                    
+                    (   <Chip 
+                            variant='outlined' 
+                            label='Paid order' 
+                            color='success' 
+                            icon={ <CreditScoreOutlined/> }
+                        />
+                    )
+                }
+
             </Box>
 
-            <Grid container>
+            <Grid container spacing={2}>
                 <Grid item xs={ 12 } sm={ 7 }>
-                    <CartList />
+                    <CartList products={ order.orderItems }/>
                 </Grid>
                 <Grid item xs={ 12 } sm={ 5 }>
                     <Card className='summary-card'>
                         <CardContent>
-                            <Typography variant='h2' component='h2'>Order</Typography>
+                            <Typography variant='h2' component='h2'>
+                                Order Resume({numberOfItems} {numberOfItems > 1 ? 'items' : 'item'})
+                            </Typography>
                             <Divider sx={{ my: 1 }}/>
                             <Box display={'flex'} justifyContent='space-between' alignItems='center'>
-                            <Typography variant='subtitle1'>Shipping Address</Typography>
-                                <NextLink href='/checkout/address' passHref legacyBehavior >
-                                    <Link underline='always' variant='subtitle2'>
-                                        Edit
-                                    </Link>
-                                </NextLink>
+                                <Typography variant='subtitle1'>Shipping Address</Typography>
                             </Box>
 
                             <Typography variant='body1'>
-                                Bernardo D&apos;Addario
+                                {shippingAddress?.name} {shippingAddress?.lastname}
                             </Typography>
                             
                             <Typography variant='body1'>
-                                 1234 Main St, New York, NY 10001
+                                 {shippingAddress?.address}, {shippingAddress.address2 && `, ${shippingAddress.address2}` }
+                            </Typography>
+                            <Typography variant='body1'>
+                                 {countries.filter(c => c.code === shippingAddress.country)[0].name}, {shippingAddress.country}, {shippingAddress.city}, {shippingAddress.zip}
                             </Typography>
                             
                             <Typography variant='body1'>
-                                +54 3 546 650 023
+                                {shippingAddress.phone}
                             </Typography>
                             
                             <Divider sx={{ my: 1 }}/>
 
-                            <Box display={'flex'} justifyContent='end' >
-                                <NextLink href='/cart' passHref legacyBehavior >
-                                    <Link underline='always' variant='subtitle2'>
-                                        Edit
-                                    </Link>
-                                </NextLink>
-                            </Box>
 
-                            <OrderSummary/>
+                            <OrderSummary 
+                                orderValues={
+                                    {
+                                        numberOfItems,
+                                        subtotal,
+                                        tax,
+                                        total
+                                    }
+                                }                 
+
+                            />
+
                             <Box sx={{ mt: 3 }}>
-                                    {/* TODO */}
-                                    {/* Payment methods */}
-                                <Chip 
-                                    variant='outlined' 
-                                    label='Paid order' 
-                                    color='success' 
-                                    icon={ <CreditScoreOutlined/> }
-                                />
+                                {
+                                order.isPaid ?     
+                                    <Chip 
+                                        variant='outlined' 
+                                        label='Paid order' 
+                                        color='success' 
+                                        icon={ <CreditScoreOutlined/> }
+                                    />
+                                    :
+                                    <h4>go to payment</h4>
+                                }
                             </Box>
                         </CardContent>
                     </Card>
@@ -106,7 +118,7 @@ const OrderPage: NextPage<Props> = ({order}) => {
 export const getServerSideProps: GetServerSideProps = async ({req, query, params}) => {
     
     const { id = '' } = query as { id: string };
-    
+
     const session: any = await getSession({ req });
 
     if(!session) {
