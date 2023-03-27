@@ -92,7 +92,7 @@ const OrderPage: NextPage<Props> = ({ order }) => {
 
                             />
 
-                            <Box sx={{ mt: 3 }}>
+                            <Box sx={{ mt: 3 }} display='flex' flexDirection='column'>
                                 {
                                 order.isPaid ?     
                                     <Chip 
