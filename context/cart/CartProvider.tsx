@@ -3,6 +3,7 @@ import { useEffect, useReducer } from 'react';
 import { CartContext, cartReducer } from './';
 import Cookies from 'js-cookie';
 import { tesloApi } from '@/api';
+import axios from 'axios';
 
 interface Props {
    children: JSX.Element | JSX.Element[];
@@ -119,7 +120,7 @@ export const CartProvider: React.FC<Props> = ({children}) => {
         dispatch({type:'[CART]-UPDATE_SHIPPING_ADDRESS', payload: address });
     }
 
-    const createOrder = async () => {
+    const createOrder = async ():Promise<{ hasError: boolean, message: string  }> => {
         
         if(!state.shippingAddress) throw new Error('Shipping address is required');
 
@@ -138,13 +139,29 @@ export const CartProvider: React.FC<Props> = ({children}) => {
         }
         
         try {
-            const { data } = await tesloApi.post('/orders', body);
+            const { data } = await tesloApi.post<IOrder>('/orders', body);
             console.log({data});
 
+            // dispatch({type:'[CART]-CLEAR_CART'});
+            
+            return { 
+                hasError: false, 
+                message: data._id!
+            }
+
         } catch (error) {
-            console.log(error);
+            if(axios.isAxiosError(error)){
+                return { 
+                    hasError: true, 
+                    message: error.response?.data.message || error.message
+                } 
+            } 
+                return {
+                    hasError: true,
+                    message:'Error creating order'
+                }
+            }
         }
-    }
 
 
    return (

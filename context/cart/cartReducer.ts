@@ -10,7 +10,8 @@ type CartActionType =
 | { type: '[CART]-REMOVE_PRODUCT_FROM_CART', payload: ICartProduct }
 | { type: '[CART]-LOAD_SHIPPING_ADDRESS',    payload: ShippingAddress }
 | { type: '[CART]-UPDATE_SHIPPING_ADDRESS',  payload: ShippingAddress }
-| { type: '[CART]-UPDATE_ORDER_SUMMARY', 
+| { type: '[CART]-CLEAR_CART'}
+| { type: '[CART]-UPDATE_ORDER_SUMMARY' 
     payload: {
       numberOfItems: number;
       subtotal     : number;
@@ -18,7 +19,6 @@ type CartActionType =
       total        : number;
     }
   }
-
 
 export const cartReducer = (state: CartState, action: CartActionType): CartState => {
     switch (action.type) {
@@ -57,6 +57,15 @@ export const cartReducer = (state: CartState, action: CartActionType): CartState
         return {
           ...state,
           shippingAddress: action.payload
+        }
+      case '[CART]-CLEAR_CART': 
+        return {
+          ...state,
+          cart: [],
+          numberOfItems: 0,
+          subtotal: 0,
+          tax: 0,
+          total: 0,
         }
       default: 
           return state; 
