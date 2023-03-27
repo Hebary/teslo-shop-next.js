@@ -142,7 +142,7 @@ export const CartProvider: React.FC<Props> = ({children}) => {
             const { data } = await tesloApi.post<IOrder>('/orders', body);
             console.log({data});
 
-            // dispatch({type:'[CART]-CLEAR_CART'});
+            dispatch({type:'[CART]-CLEAR_CART'});
             
             return { 
                 hasError: false, 

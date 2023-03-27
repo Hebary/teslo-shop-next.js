@@ -74,7 +74,9 @@ export const Sidemenu: React.FC = () => {
                             <ListItemText primary={'Profile'} />
                         </ListItemButton>
                     
-                        <ListItemButton>
+                        <ListItemButton
+                            onClick={ ()=> navigateTo('/orders/history') }
+                        >
                             <ListItemIcon>
                                 <ConfirmationNumberOutlined/>
                             </ListItemIcon>

@@ -1,18 +1,27 @@
-import { NextPage } from 'next';
+import { NextPage, GetServerSideProps } from 'next';
 import NextLink from 'next/link';
-import { Typography, Grid, Card, CardContent, Divider, Box, Button, Link, Chip } from '@mui/material';
+import { Typography, Grid, Card, CardContent, Divider, Box, Link, Chip } from '@mui/material';
+import { getSession } from 'next-auth/react';
+import { CreditScoreOutlined } from '@mui/icons-material';
 import { ShopLayout } from '@/components/layouts';
 import { CartList, OrderSummary } from '@/components/cart';
-import { CreditCardOutlined, CreditScoreOutlined } from '@mui/icons-material';
+import { IOrder } from '@/interfaces';
+import { tesloApi } from '@/api';
+import { dbOrders } from '@/database';
+import { Order } from '@/models';
 
 
 
 
 
 interface Props {
+    order: IOrder 
 }
 
-const OrderPage: NextPage<Props> = ({}) => {
+const OrderPage: NextPage<Props> = ({order}) => {
+    
+    console.log(order)
+
     return (
         <ShopLayout title={'summary of order 1215231923'} pageDescription='summary client order'>
             <Box display='flex' alignItems='center' sx={{ mb: 2 }} justifyContent='start' gap={2}>
@@ -91,5 +100,52 @@ const OrderPage: NextPage<Props> = ({}) => {
         </ShopLayout>
     )
 }
+
+// You should use getServerSideProps when:
+// - Only if you need to pre-render a page whose data must be fetched at request time
+export const getServerSideProps: GetServerSideProps = async ({req, query, params}) => {
+    
+    const { id = '' } = query as { id: string };
+    
+    const session: any = await getSession({ req });
+
+    if(!session) {
+        return {
+            redirect : {
+                destination: `/auth/login?p=/orders/${ id }`,
+                permanent: false
+            }
+        }
+    }
+
+    const order = await dbOrders.getOrderById( id );
+
+    
+    if(!order) {
+        return {
+            redirect : {
+                destination: '/order/history',
+                permanent: false
+            }
+        }
+    }
+
+    if(order.user !== session.user._id) {
+        return {
+            redirect : {
+                destination: '/order/history',
+                permanent: false
+            }
+        }
+    }
+
+
+    return {
+        props: {
+            order
+        }
+    }
+}
+
 
 export default OrderPage;
