@@ -112,7 +112,6 @@ const OrderPage: NextPage<Props> = ({ order }) => {
                                         total
                                     }
                                 }                 
-
                             />
 
                             <Box sx={{ mt: 3 }} display='flex' flexDirection='column'>
@@ -126,13 +125,13 @@ const OrderPage: NextPage<Props> = ({ order }) => {
                                     />
                                     :
                                     <PayPalButtons 
-                                        style={{ layout: 'vertical' , color:'black'}} 
+                                        style={{ layout: 'vertical' , color:'blue'}} 
                                         createOrder={(data, actions) => {
                                             return actions.order.create({
                                                 purchase_units: [
                                                     {
                                                         amount: {
-                                                            value: "304.99",
+                                                            value: `${order.total}`,
                                                         },
                                                     },
                                                 ],
@@ -141,8 +140,8 @@ const OrderPage: NextPage<Props> = ({ order }) => {
                                         onApprove={(data, actions) => {
                                             return actions.order!.capture().then((details) => {
                                                 console.log({details});
+                                                //TODO backend validation
                                                 const name = details.payer.name!.given_name;
-                                                alert(`Transaction completed by ${name}`);
                                             });    
                                         }
                                       }  
