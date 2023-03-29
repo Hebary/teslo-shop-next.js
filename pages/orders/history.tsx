@@ -24,9 +24,9 @@ const History: NextPage<Props> = ({ orders }) => {
         { field: 'fullname', headerName: 'Full Name', width: 300 },
         
         {
-            field:'paid',
-            headerName:'Pay status',
+            field:'Payment status',
             description:'Shows if the order has been paid',
+            headerName:'Pay status',
             width: 200,
             renderCell: (params: GridRenderCellParams ) => {
                 return (
@@ -34,18 +34,36 @@ const History: NextPage<Props> = ({ orders }) => {
                 )
             }
         },
+
         {
-            field:'actions',
+            field:'Shipping Address',
+            description:'Shows the order shipping address',
+            width: 200,
+            renderCell: (params: GridRenderCellParams ) => {
+                return (
+                    params.row.address && <Chip color='primary' variant='outlined'  label={`${params.row.address}`}/>
+                )
+            }
+        },
+        
+        {
+            field:'Actions',
             headerName:'Actions',
             description:'Shows the order ID and the link to the order',
             width: 200,
             sortable: false,
             renderCell: (params: GridRenderCellParams ) => {
                 return (
-                    <NextLink href={`/orders/${params.row.orderId}`} legacyBehavior passHref>
-                        <Link color='primary' underline='none' sx={{cursor:'pointer'}} >
-                                View order 
-                        </Link>
+                    <NextLink 
+                        href={`/orders/${params.row.orderId}`} 
+                        legacyBehavior 
+                        passHref>
+                            <Link 
+                                color='primary' 
+                                underline='none' 
+                                sx={{cursor:'pointer'}} >
+                                    View order 
+                            </Link>
                     </NextLink>
                 )
             }
@@ -58,6 +76,8 @@ const History: NextPage<Props> = ({ orders }) => {
             id: i+1,
             paid: order.isPaid,
             fullname: `${order.shippingAddress.name} ${order.shippingAddress.lastname}`,
+            address: order.shippingAddress.address,
+            country: order.shippingAddress.country,
             orderId: order._id
         }))
 

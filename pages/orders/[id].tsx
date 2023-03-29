@@ -1,7 +1,10 @@
+import { useEffect, useState } from 'react';
 import { NextPage, GetServerSideProps } from 'next';
-import { Typography, Grid, Card, CardContent, Divider, Box, Link, Chip } from '@mui/material';
+import { Typography, Grid, Card, CardContent, Divider, Box, Chip } from '@mui/material';
 import { getSession } from 'next-auth/react';
 import { CreditCardOutlined, CreditScoreOutlined } from '@mui/icons-material';
+import { PayPalScriptProvider, PayPalButtons } from '@paypal/react-paypal-js';
+
 
 import { ShopLayout } from '@/components/layouts';
 import { CartList, OrderSummary } from '@/components/cart';
@@ -9,19 +12,37 @@ import { CartList, OrderSummary } from '@/components/cart';
 import { IOrder } from '@/interfaces';
 import { dbOrders } from '@/database';
 import { countries } from '../../utils/countries';
-
+import { FullScreenLoading } from '@/components/ui';
 
 
 interface Props {
     order: IOrder 
 }
 
+
 const OrderPage: NextPage<Props> = ({ order }) => {
     
+    const [isLoading, setIsLoading] = useState( false );
+
     const { _id, shippingAddress, numberOfItems, subtotal, tax, total } = order;
 
+
+    const handleSyncro = () => {
+        setIsLoading( true );
+        setTimeout(() => {
+            setIsLoading( false );
+        }, 3000);
+    }
+
+    useEffect(() => {
+        handleSyncro();
+    }, [])
+    
+
     return (
-        <ShopLayout title={'summary of order '+_id} pageDescription='summary client order' >
+        <ShopLayout title={'summary of order '+_id} pageDescription= 'summary client order' >
+            
+            
             <Box display='flex' alignItems='center' sx={{ mb: 4 }} justifyContent='start' gap={2}>
 
                 <Typography variant='h1' component='h1' >Order {_id}</Typography>
@@ -37,15 +58,17 @@ const OrderPage: NextPage<Props> = ({ order }) => {
                     ) :
                     
                     (   <Chip 
-                            variant='outlined' 
+                        variant='outlined' 
                             label='Paid order' 
                             color='success' 
                             icon={ <CreditScoreOutlined/> }
                         />
-                    )
-                }
+                        )
+                    }
 
             </Box>
+            
+            {isLoading ? <FullScreenLoading/> : 
 
             <Grid container spacing={2} className='fadeIn' >
                 <Grid item xs={ 12 } sm={ 7 }>
@@ -102,13 +125,35 @@ const OrderPage: NextPage<Props> = ({ order }) => {
                                         icon={ <CreditScoreOutlined/> }
                                     />
                                     :
-                                    <h4>go to payment</h4>
+                                    <PayPalButtons 
+                                        style={{ layout: 'vertical' , color:'black'}} 
+                                        createOrder={(data, actions) => {
+                                            return actions.order.create({
+                                                purchase_units: [
+                                                    {
+                                                        amount: {
+                                                            value: "304.99",
+                                                        },
+                                                    },
+                                                ],
+                                            });
+                                        }}
+                                        onApprove={(data, actions) => {
+                                            return actions.order!.capture().then((details) => {
+                                                console.log({details});
+                                                const name = details.payer.name!.given_name;
+                                                alert(`Transaction completed by ${name}`);
+                                            });    
+                                        }
+                                      }  
+                                    />
                                 }
                             </Box>
                         </CardContent>
                     </Card>
                 </Grid>
             </Grid>
+        }
         </ShopLayout>
     )
 }

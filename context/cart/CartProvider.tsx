@@ -23,7 +23,7 @@ const CART_INITIAL_STATE: CartState = {
     isLoaded: false,
     cart: [],
     numberOfItems: 0,
-    subtotal :0,
+    subtotal: 0,
     tax: 0,
     total: 0,
     shippingAddress: undefined
@@ -125,7 +125,7 @@ export const CartProvider: React.FC<Props> = ({children}) => {
         if(!state.shippingAddress) throw new Error('Shipping address is required');
 
 
-        const body:IOrder = {
+        const body: IOrder = {
             orderItems: state.cart.map(p => ({
                 ...p,
                 size: p.size!,
