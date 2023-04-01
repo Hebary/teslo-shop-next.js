@@ -5,11 +5,7 @@ import { MenuOutlined } from '@mui/icons-material';
 import { UIContext } from '@/context';
 
 
-
-interface Props {
-}
-
-export const AdminNavbar: React.FC<Props> = ({}) => {
+export const AdminNavbar: React.FC = ({}) => {
 
     const { toggleMenu } = useContext(UIContext);
 

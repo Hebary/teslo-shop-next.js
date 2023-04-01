@@ -7,7 +7,7 @@ import {
 } from "@mui/material"
 // Icons
 import { 
-    AccountCircleOutlined, AdminPanelSettings, CategoryOutlined, ConfirmationNumberOutlined, EscalatorWarningOutlined, FemaleOutlined, 
+    AccountCircleOutlined, AdminPanelSettings, CategoryOutlined, ConfirmationNumberOutlined, DashboardOutlined, EscalatorWarningOutlined, FemaleOutlined, 
     LoginOutlined, MaleOutlined, SearchOutlined, VpnKeyOutlined 
 } from "@mui/icons-material"
 
@@ -144,6 +144,15 @@ export const Sidemenu: React.FC = () => {
                 <>
                     <ListSubheader>Admin Panel</ListSubheader>
 
+                    <ListItemButton
+                        onClick ={ ()=> navigateTo('/admin')}
+                    >
+                        <ListItemIcon>
+                            <DashboardOutlined/>
+                        </ListItemIcon>
+                        <ListItemText primary={'Dashboard'} />
+                    </ListItemButton>
+                    
                     <ListItemButton>
                         <ListItemIcon>
                             <CategoryOutlined/>
