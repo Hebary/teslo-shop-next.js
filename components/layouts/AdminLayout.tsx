@@ -27,11 +27,11 @@ export const AdminLayout: React.FC<Props> = ({ children, title, subtitle, icon }
                 padding: '0 20px', 
             }}>
                 <Box display='flex' flexDirection='column'>
-                    <Typography variant='h4' display='flex' alignItems='center' className='red-hat-font' sx={{ mb:1}}>
+                    <Typography variant='h4' display='flex' alignItems='center' className='red-hat-font' >
                         { icon }
                         {' '}{ title }
                     </Typography>
-                    <Typography variant='h5' className='red-hat-font' sx={{ ml: 3}}>
+                    <Typography variant='h5' className='red-hat-font' sx={{ ml: 3, mb:1}}>
                         { subtitle }
                     </Typography>
                 </Box>

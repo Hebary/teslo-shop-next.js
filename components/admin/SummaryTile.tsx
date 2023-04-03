@@ -18,8 +18,8 @@ export const SummaryTile: React.FC<Props> = ({ title, subtitle, icon }) => {
                     {icon}
                 </CardContent> 
                 <CardContent sx={{flex:'1 0 auto', display:'flex', flexDirection:'column'}}>
-                    <Typography variant='h4'>{ title }</Typography> 
-                    <Typography variant='caption'>{ subtitle }</Typography> 
+                    <Typography className='red-hat-font' variant='h4'>{ title }</Typography> 
+                    <Typography className='red-hat-font' fontSize='15px' fontWeight={'bold'} variant='caption'>{ subtitle }</Typography> 
                 </CardContent> 
             </Card>
         </Grid>
