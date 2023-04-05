@@ -28,7 +28,7 @@ export const AdminLayout: React.FC<Props> = ({ children, title, subtitle, icon }
             }}>
                 <Box display='flex' flexDirection='column'>
                     <Typography variant='h4' display='flex' alignItems='center' className='red-hat-font' >
-                        { icon }
+                       <Typography  sx={{mt:1.5, mr:1, mb:1}}> { icon }</Typography>
                         {' '}{ title }
                     </Typography>
                     <Typography variant='h5' className='red-hat-font' sx={{ ml: 3, mb:1}}>

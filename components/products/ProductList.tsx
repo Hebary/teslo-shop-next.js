@@ -9,7 +9,7 @@ interface Props {
 
 export const ProductList: React.FC<Props> = ({products}) => {
    return (
-        <Grid container spacing={4} >
+        <Grid container spacing={4} className='fadeInUp' >
             {
                 products.map(product => (
                     <ProductCard 

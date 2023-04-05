@@ -24,6 +24,7 @@ export const ProductCard: React.FC<Props> = ({ product }) => {
 
     return (
         <Grid
+            className='fadeInUp'
             item xs={6} sm={4}
             onMouseEnter={() => setIsHovered(true)}
             onMouseLeave={() => setIsHovered(false)}

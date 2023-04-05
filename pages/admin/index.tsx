@@ -7,6 +7,8 @@ import { AdminLayout } from '@/components/layouts';
 import { SummaryTile } from '@/components/admin';
 import { DashboardResponse } from '@/interfaces';
 import { FullScreenLoading } from '@/components/ui';
+import { useEffect, useState } from 'react';
+import { blue } from '@mui/material/colors';
 
 
 
@@ -17,6 +19,16 @@ const AdminDashboard: NextPage = () => {
     const {data, error} = useSWR<DashboardResponse>('/api/admin/dashboard', {
         refreshInterval: 30*1000
     });
+
+    const [refreshIn, setRefreshIn] = useState(30);
+
+    useEffect(() => {
+        const interval = setInterval(() => {
+        setRefreshIn(refreshIn => refreshIn > 0 ? refreshIn - 1 : 30);
+      },1000)
+        return () => clearInterval(interval);
+    }, [])
+    
     
     if(!error && !data) return <FullScreenLoading/>
     if(error) return <p>Something went wrong</p>
@@ -35,9 +47,9 @@ const AdminDashboard: NextPage = () => {
         <AdminLayout
             title={'Admin Dashboard'}
             subtitle={'General Stats'}
-            icon={<DashboardOutlined/>}
+            icon={<DashboardOutlined sx={{fontSize: 33}}/>}
         >
-            <Grid container spacing={2}>
+            <Grid container spacing={4} m='10px auto'>
             
                 <SummaryTile
                     title={ orders }
@@ -62,7 +74,7 @@ const AdminDashboard: NextPage = () => {
                 <SummaryTile
                     title={ numberOfProducts }
                     subtitle={'Products'}
-                    icon={<CategoryOutlined color='primary' sx={{ fontSize: 45 }}/>}
+                    icon={<CategoryOutlined  sx={{color:blue[300], fontSize: 45 }}/>}
                 />
                 <SummaryTile
                     title={ productsOutOfStock }
@@ -75,8 +87,8 @@ const AdminDashboard: NextPage = () => {
                     icon={<ProductionQuantityLimitsOutlined color='warning' sx={{ fontSize: 45 }}/>}
                 />
                 <SummaryTile
-                    title={ 11 }
-                    subtitle={'Update inventary in: 2 days'}
+                    title={ refreshIn }
+                    subtitle={'Update in: '+refreshIn+' seconds' }
                     icon={<AccessTimeOutlined color='secondary' sx={{ fontSize: 45 }}/>}
                 />
             </Grid>

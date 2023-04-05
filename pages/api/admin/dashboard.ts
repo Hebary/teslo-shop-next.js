@@ -2,8 +2,10 @@ import { db } from '@/database';
 import { IOrder } from '@/interfaces';
 import { Order, Product, User } from '@/models';
 import type { NextApiRequest, NextApiResponse } from 'next'
+import { getToken } from 'next-auth/jwt';
 
-type Data = {
+type Data = 
+| {
     orders            : number
     paidOrders        : number
     notPaidOrders     : number
@@ -11,7 +13,7 @@ type Data = {
     numberOfProducts  : number
     productsOutOfStock: number
     lowInventory      : number    
-} 
+} | {message?:string}
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse<Data>) {
     switch (req.method) {
@@ -25,6 +27,12 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
 
 const getStatsFromOrders = async (req: NextApiRequest, res: NextApiResponse<Data>) => {
         await db.connect();
+
+        const session: any = await getToken({ req, secret: process.env.NEXTAUTH_SECRET});
+
+        if(!session) {
+            return res.status(401).json({ message: 'Not authorized' });
+        }
 
         const [
             orders,
