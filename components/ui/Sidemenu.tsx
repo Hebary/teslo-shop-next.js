@@ -167,7 +167,9 @@ export const Sidemenu: React.FC = () => {
                         <ListItemText primary={'Orders'} />
                     </ListItemButton>
 
-                    <ListItemButton>
+                    <ListItemButton
+                        onClick ={ ()=> navigateTo('/admin/users')}
+                    >
                         <ListItemIcon>
                             <AdminPanelSettings/>
                         </ListItemIcon>

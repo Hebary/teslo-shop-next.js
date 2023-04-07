@@ -55,7 +55,7 @@ const Login: NextPage = () => {
    return (
         <AuthLayout title='Sign In Page'>
 
-            <form onSubmit={ handleSubmit(onSignIn) }>
+            <form onSubmit={ handleSubmit(onSignIn) } className='fadeInUp'>
                 <Box  sx={{ width:'350px' }}>
                         <Grid container spacing={ 3 }>
 

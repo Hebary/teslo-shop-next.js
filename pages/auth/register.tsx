@@ -49,7 +49,7 @@ const RegisterPage: NextPage = () => {
 
     return (
         <AuthLayout title='Register Page'>
-            <form onSubmit={ handleSubmit(onRegister) }>
+            <form onSubmit={ handleSubmit(onRegister) } className='fadeInUp'>
                 <Box  sx={{ width:'350px' }}>
                     <Grid container spacing={ 3 }>
                         

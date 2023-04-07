@@ -12,7 +12,7 @@ type Data =
 
 export default function handler(req: NextApiRequest, res: NextApiResponse<Data>) {
     switch (req.method) {
-        case 'POST':
+        case 'GET':
             return getUsers(req, res);            
         case 'PUT':
             return updateUser(req, res);            
@@ -36,9 +36,9 @@ const updateUser = async (req: NextApiRequest, res: NextApiResponse<Data>)=> {
         return res.status(400).json({ message: 'Invalid user id' });
     }
 
-    const validRoles = ['user', 'admin'];
+    const validRoles = ['admin', 'client'];
 
-    if(!validRoles.includes(role)){
+    if(!validRoles.includes(role.toLowerCase().toString())){
         return res.status(400).json({ message: 'Invalid role '+validRoles.join(', ') });
     }
 
