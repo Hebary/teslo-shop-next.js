@@ -85,7 +85,7 @@ const Users: NextPage = ({}) => {
     return (
         <AdminLayout
                 title={'Users'}
-                subtitle={'Users Management'}
+                subtitle={'Users Panel Admin'}
                 icon={<PeopleOutline sx={{ fontSize: 35, mt: .6 }}/>}
             >
 
