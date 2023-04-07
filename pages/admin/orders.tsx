@@ -31,7 +31,7 @@ const columns: GridColDef[] = [
         headerName: 'View Order',
         renderCell: ({row}: GridRenderCellParams) => {
             return (
-                <Link underline='always' href={`/admin/order/${row.id}`} target='_blank'>
+                <Link underline='always' href={`/admin/orders/${row.id}`} >
                     View Order
                 </Link>
             )
