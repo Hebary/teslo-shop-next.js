@@ -153,7 +153,9 @@ export const Sidemenu: React.FC = () => {
                         <ListItemText primary={'Dashboard'} />
                     </ListItemButton>
                     
-                    <ListItemButton>
+                    <ListItemButton
+                        onClick={ () => navigateTo('/admin/products')}
+                    >
                         <ListItemIcon>
                             <CategoryOutlined/>
                         </ListItemIcon>
