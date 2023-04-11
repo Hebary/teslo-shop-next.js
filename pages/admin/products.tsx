@@ -73,8 +73,8 @@ const Products: NextPage = () => {
                 href='/admin/products/new' 
                 variant='contained'
                 size='medium'
-                color='primary'
-                sx={{ ":hover": { backgroundColor: 'secondary.main' } }}
+                color='secondary'
+                sx={{ bgcolor:'secondary.main', ":hover": {bgcolor: 'secondary.main'} }}
                 startIcon={<AddCircleOutline/>}
                 >
                 Create Product

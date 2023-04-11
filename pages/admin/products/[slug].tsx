@@ -140,10 +140,11 @@ const ProductAdminPage:FC<Props> = ({ product }) => {
     const onDeleteImage = (image: string) => {
         setValue('images', getValues('images').filter(i=> i !== image), { shouldValidate: true });
     }
+
     return (
         <AdminLayout 
             title={`Product Admin Panel`} 
-            subtitle={`On Edit: ${ product.title }`}
+            subtitle={` ${product.title ? 'On Edit '+ product.title : 'Create Product' }`}
             icon={ <DriveFileRenameOutline sx={{ fontSize:30, mt:.5}} /> }
         >
             <form onSubmit={ handleSubmit(onSubmit) }>
