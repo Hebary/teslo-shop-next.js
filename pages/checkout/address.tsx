@@ -8,7 +8,8 @@ import Cookies from "js-cookie";
 
 import { ShopLayout } from "@/components/layouts"
 import { countries } from "@/utils/countries";
-import { CartContext, ShippingAddress } from "@/context";
+import { CartContext} from "@/context";
+import { ShippingAddress } from "@/interfaces";
 
 
 type FormData = {
