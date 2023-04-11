@@ -46,7 +46,6 @@ const RegisterPage: NextPage = () => {
         // replace(destination);
         await signIn('credentials',{email, password});
     }
-
     return (
         <AuthLayout title='Register Page'>
             <form onSubmit={ handleSubmit(onRegister) } className='fadeInUp'>
