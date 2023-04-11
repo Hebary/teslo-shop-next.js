@@ -277,7 +277,7 @@ const ProductAdminPage:FC<Props> = ({ product }) => {
                     </Grid>
 
                     {/* Tags e imagenes */}
-                    <Grid item xs={12} sm={ 6 }>
+                    <Grid item xs={ 12 } sm={ 6 }>
                         <TextField
                             label="Slug - URL"
                             variant="filled"

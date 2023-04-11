@@ -39,3 +39,6 @@ next-env.d.ts
 
 # mongo
 mongo/
+
+.env.development
+.env.production
