@@ -3,8 +3,8 @@ import { IProduct } from '../interfaces';
 
 
 const ProductSchema = new Schema({
-    title: { type: String, required: true },
-    description: { type: String, required: true },
+    title: { type: String, required: true, default: '' },
+    description: { type: String, required: true, default: '' },
     images: [
         { type: String }
     ],
@@ -17,21 +17,23 @@ const ProductSchema = new Schema({
             message: '{VALUE} is not supported'
         }
     }],
-    slug: { type: String, required: true, unique: true },
+    slug: { type: String, required: true, unique: true, default:'' },
     tags: [{ type: String }],
     type:[{ 
         type: String, 
         enum:{
             values: ['shirts', 'pants', 'hoodies', 'hats'],
             message: '{VALUE} is not supported'
-        }
+        },
+        default: 'shirts'
     }],
     gender: [{ 
         type: String, 
         enum:{
             values: ['men', 'women', 'kid', 'unisex'],
             message: '{VALUE} is not supported'
-        }
+        },
+        default:'unisex'
     }],
   },{
     timestamps: true

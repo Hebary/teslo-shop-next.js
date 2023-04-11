@@ -36,7 +36,7 @@ export const CartList: React.FC<Props> = ({ editable = false, products=[] }) => 
                                 <Link component='span'>
                                     <CardActionArea>
                                         <CardMedia
-                                            image = { `/products/${product.image }` }
+                                            image = { product.image }
                                             component='img'
                                             sx={{ borderRadius: 5}}
                                         />

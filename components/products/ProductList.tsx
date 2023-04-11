@@ -16,7 +16,7 @@ export const ProductList: React.FC<Props> = ({products}) => {
                         key={product.slug} 
                         product={product} 
                     />
-                ))
+                )).sort( () => Math.random() - 0.9 )
             }
         </Grid>
     )

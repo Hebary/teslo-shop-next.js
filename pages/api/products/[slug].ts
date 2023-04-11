@@ -29,6 +29,10 @@ const getProduct = async (req:NextApiRequest, res:NextApiResponse) => {
         return res.status(404).json({message:'Product not found'});
     }
 
+    dbProduct.images = dbProduct.images.map( (image: string) => {
+        return image.includes('https') ? image : `${process.env.HOST_NAME}/products/${image}`;
+    })
+
     await db.disconnect();
     res.status(200).json(dbProduct);
 }

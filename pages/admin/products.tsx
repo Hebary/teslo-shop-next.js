@@ -1,7 +1,7 @@
 import { NextPage } from 'next';
-import { DataGrid, GridColDef, GridRenderCellParams, GridValueGetterParams } from '@mui/x-data-grid';
-import { CardMedia, Chip, Grid, Link } from '@mui/material';
-import { ConfirmationNumberOutlined } from '@mui/icons-material';
+import { DataGrid, GridColDef, GridRenderCellParams } from '@mui/x-data-grid';
+import { Box, Button, CardMedia, Chip, Grid, Link } from '@mui/material';
+import { ConfirmationNumberOutlined, AddCircleOutlined, AddCircleOutline } from '@mui/icons-material';
 import useSWR from 'swr';
 
 import { AdminLayout } from '@/components/layouts';
@@ -13,11 +13,11 @@ const columns: GridColDef[] = [
     { field: 'img', headerName: 'Image', 
         renderCell:({ row }: GridRenderCellParams) => {
             return (
-                <Link href={`/product/${row.slug}`} target='_blank' rel='nonreferrer'>
+                <Link href={`/admin/products/${row.slug}`} target='_blank' rel='nonreferrer'>
                     <CardMedia
                         sx={{objectFit:'cover'}}
                         component='img'
-                        image={`/products/${row.img}`}
+                        image={row.img}
                     />
                 </Link>
             )
@@ -67,6 +67,19 @@ const Products: NextPage = () => {
             subtitle='Products Panel Admin'
             icon={<ConfirmationNumberOutlined sx={{ mt: 0.5, fontSize: 35 }}/>}
         >   
+
+        <Box display='flex' justifyContent={'end'} mb={1}>
+            <Button
+                href='/admin/products/new' 
+                variant='contained'
+                size='medium'
+                color='primary'
+                sx={{ ":hover": { backgroundColor: 'secondary.main' } }}
+                startIcon={<AddCircleOutline/>}
+                >
+                Create Product
+            </Button>
+        </Box>
         
         <Grid container >
             <Grid item xs={ 12 } className='fadeIn' sx={{ my:'20px', height:'650px', width:'100%' }}>
