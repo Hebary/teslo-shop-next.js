@@ -3,7 +3,7 @@ import axios from 'axios';
 import Cookies from 'js-cookie';
 import { AuthContext, authReducer } from './';
 import { IUser } from '@/interfaces/';
-import { tesloApi } from '@/api';
+import { tesloApi } from '@/axiosApi';
 import { useSession, signOut } from 'next-auth/react';
 
 

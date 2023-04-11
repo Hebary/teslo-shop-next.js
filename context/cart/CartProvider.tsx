@@ -2,7 +2,7 @@ import { ICartProduct, IOrder, ShippingAddress } from '@/interfaces';
 import { useEffect, useReducer } from 'react';
 import { CartContext, cartReducer } from './';
 import Cookies from 'js-cookie';
-import { tesloApi } from '@/api';
+import { tesloApi } from '@/axiosApi';
 import axios from 'axios';
 
 interface Props {

@@ -5,7 +5,7 @@ import { Grid, MenuItem, Select } from '@mui/material';
 import { PeopleOutline } from '@mui/icons-material';
 import useSWR from 'swr';
 
-import { tesloApi } from '@/api';
+import { tesloApi } from '@/axiosApi';
 import { AdminLayout } from '@/components/layouts';
 import { FullScreenLoading } from '@/components/ui';
 import { IUser } from '@/interfaces';

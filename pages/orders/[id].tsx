@@ -13,7 +13,7 @@ import { CartList, OrderSummary } from '@/components/cart';
 import { IOrder } from '@/interfaces';
 import { dbOrders } from '@/database';
 import { countries } from '../../utils/countries';
-import { tesloApi } from '@/api';
+import { tesloApi } from '@/axiosApi';
 import { useRouter } from 'next/router';
 
 
