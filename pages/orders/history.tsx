@@ -45,6 +45,10 @@ const History: NextPage<Props> = ({ orders }) => {
                 )
             }
         },
+        {
+            field:'total', headerName:'Total', width: 200, description:'Shows the order total', align:'center', headerAlign:'center'
+        },
+        
         
         {
             field:'Actions',
@@ -78,6 +82,7 @@ const History: NextPage<Props> = ({ orders }) => {
             fullname: `${order.shippingAddress.name} ${order.shippingAddress.lastname}`,
             address: order.shippingAddress.address,
             country: order.shippingAddress.country,
+            total: order.total,
             orderId: order._id
         }))
 
